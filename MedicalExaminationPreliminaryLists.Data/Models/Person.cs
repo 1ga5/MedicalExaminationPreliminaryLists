@@ -7,7 +7,7 @@ using MedicalExaminationPreliminaryLists.Data.Common;
 
 namespace MedicalExaminationPreliminaryLists.Data.Models
 {
-    internal class Person : BaseEntity
+    public class Person : BaseEntity
     {
         public int PersonId { get; set; }
         public string FirstName { get; set; } = string.Empty;
