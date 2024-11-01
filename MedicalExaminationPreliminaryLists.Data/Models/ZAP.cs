@@ -18,6 +18,19 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
         [Display(Name = "Ссылка на объект Person")]
         public virtual Person? Person { get; set; }
 
+        [Display(Name = "Фамилия")]
+        public string Surname { get; set; } = string.Empty;
+        
+        [Display(Name = "Имя")]
+        public string Name1 { get; set; } = string.Empty;
+        
+        [Display(Name = "Отчество")]
+        public string Name2 { get; set; } = string.Empty;
 
+        [Display(Name = "Дата рождения")]
+        public DateTime Birthday { get; set; }
+
+        [Display(Name = "Номер телефона")]
+        public string TelephoneNumber { get; set; } = string.Empty;
     }
 }

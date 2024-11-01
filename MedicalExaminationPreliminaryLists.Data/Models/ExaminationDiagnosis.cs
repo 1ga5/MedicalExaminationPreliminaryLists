@@ -5,7 +5,7 @@ using TFOMSReestrServer.DS.Models;
 
 namespace MedicalExaminationPreliminaryLists.Data.Models
 {
-    public class Diagnosis : BaseEntity
+    public class ExaminationDiagnosis : BaseEntity
     {
         [Display(Name = "Порядковый номер")]
         public int Number { get; set; }
