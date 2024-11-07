@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MedicalExaminationPreliminaryLists.Data.Common;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TFOMSReestrServer.DS.Common;
 
-namespace TFOMSReestrServer.DS.Models
+namespace MedicalExaminationPreliminaryLists.Data.Models
 {
     [Table(name: "Persons")]
     public class Person:BaseGUIDEntity

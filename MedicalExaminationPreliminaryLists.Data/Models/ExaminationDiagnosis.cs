@@ -1,7 +1,6 @@
 ﻿using MedicalExaminationPreliminaryLists.Data.Common;
 using MedicalExaminationPreliminaryLists.Data.Models.Dictionaries;
 using System.ComponentModel.DataAnnotations;
-using TFOMSReestrServer.DS.Models;
 
 namespace MedicalExaminationPreliminaryLists.Data.Models
 {
@@ -36,7 +35,5 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
 
         [Display(Name = "Ссылка на объект ZAP")]
         public virtual ZAP? ZAP { get; set; }
-
-
     }
 }

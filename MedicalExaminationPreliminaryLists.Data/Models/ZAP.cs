@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using TFOMSReestrServer.DS.Common;
-using TFOMSReestrServer.DS.Models;
+﻿using MedicalExaminationPreliminaryLists.Data.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace MedicalExaminationPreliminaryLists.Data.Models
 {
@@ -8,12 +7,13 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
     {
         [Display(Name = "Номер записи")]
         public int ZAPNumber { get; set; }
+        public string LpuType { get; set; } = string.Empty;
 
         [Display(Name = "Год")]
         public DateTime Year { get; set; }
 
         [Display(Name = "Id гражданина из ФЕРЗЛ")]
-        public int PersonId { get; set; }
+        public Guid PersonId { get; set; }
 
         [Display(Name = "Ссылка на объект Person")]
         public virtual Person? Person { get; set; }
