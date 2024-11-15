@@ -1,7 +1,10 @@
+using System.Text;
 using MedicalExaminationPreliminaryLists.Data;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using TFOMSUploadServer.Infrastructure.Repositories;
+
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 var builder = WebApplication.CreateBuilder(args);
 

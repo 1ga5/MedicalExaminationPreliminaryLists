@@ -1,4 +1,5 @@
-﻿using MedicalExaminationPreliminaryLists.Data.Models;
+﻿using MedicalExaminationPreliminaryLists.Api.Application.Services;
+using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Infrastructure.Common;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,9 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Controllers
                     await file.CopyToAsync(stream);
                 };
 
-                return Ok(new List<ZAP>());
+                List<ZAP> zapList = MedicalExaminationPreliminaryListReader.ReadFromXML(filePath);
+
+                return Ok(zapList);
             }
             catch (Exception ex)
             {
