@@ -16,6 +16,8 @@ builder.Services.AddTransient<IDispensaryObservationRepository, DispensaryObserv
 builder.Services.AddTransient<IMedProfileDictionaryRepository, MedProfileDictionaryRepository>();
 builder.Services.AddTransient<IPersonRepository, PersonRepository>();
 builder.Services.AddTransient<IZAPRepository, ZAPRepository>();
+builder.Services.AddTransient<IUploadFileRepository, UploadFileRepository>();
+
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>

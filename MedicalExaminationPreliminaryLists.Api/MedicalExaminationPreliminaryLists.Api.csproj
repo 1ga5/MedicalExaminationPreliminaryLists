@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Content Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -24,10 +31,6 @@
     <ProjectReference Include="..\MedicalExaminationPreliminaryLists.Data\MedicalExaminationPreliminaryLists.Data.csproj" />
     <ProjectReference Include="..\MedicalExaminationPreliminaryLists.Infrastructure\MedicalExaminationPreliminaryLists.Infrastructure.csproj" />
     <ProjectReference Include="..\MedicalExaminationPreliminaryLists.Share\MedicalExaminationPreliminaryLists.Share.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

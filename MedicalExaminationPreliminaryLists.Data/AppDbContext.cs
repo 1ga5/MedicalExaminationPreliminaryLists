@@ -11,6 +11,7 @@ namespace MedicalExaminationPreliminaryLists.Data
 
         }
 
+        public DbSet<UploadFile> UploadFiles => Set<UploadFile>();
         public DbSet<DiagnosisDictionary> DiagnosisDictionaries => Set<DiagnosisDictionary>();
         public DbSet<MedProfileDictionary> MedProfileDictionaries => Set<MedProfileDictionary>();
         public DbSet<Person> Persons => Set<Person>();
