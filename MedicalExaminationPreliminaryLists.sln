@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalExaminationPreliminaryLists.Data", "MedicalExaminationPreliminaryLists.Data\MedicalExaminationPreliminaryLists.Data.csproj", "{43832294-B001-42F2-9999-4E7F5174D876}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalExaminationPreliminaryLists.Api", "MedicalExaminationPreliminaryLists.Api\MedicalExaminationPreliminaryLists.Api.csproj", "{530E16DB-9D69-4C73-A422-089CFD9D334D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalExaminationPreliminaryLists.Api", "MedicalExaminationPreliminaryLists.Api\MedicalExaminationPreliminaryLists.Api.csproj", "{530E16DB-9D69-4C73-A422-089CFD9D334D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalExaminationPreliminaryLists.Infrastructure", "MedicalExaminationPreliminaryLists.Infrastructure\MedicalExaminationPreliminaryLists.Infrastructure.csproj", "{642CD296-D396-487F-B43F-54EF1833E773}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{530E16DB-9D69-4C73-A422-089CFD9D334D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{530E16DB-9D69-4C73-A422-089CFD9D334D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{530E16DB-9D69-4C73-A422-089CFD9D334D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{642CD296-D396-487F-B43F-54EF1833E773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{642CD296-D396-487F-B43F-54EF1833E773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{642CD296-D396-487F-B43F-54EF1833E773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{642CD296-D396-487F-B43F-54EF1833E773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

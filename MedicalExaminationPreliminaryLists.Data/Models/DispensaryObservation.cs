@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MedicalExaminationPreliminaryLists.Data.Models
 {
-    public class ExaminationDiagnosis : BaseEntity
+    public class DispensaryObservation : BaseEntity
     {
         [Display(Name = "Порядковый номер")]
         public int Number { get; set; }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MedicalExaminationPreliminaryLists.Data.Models
 {
     [Table(name: "Persons")]
-    public class Person:BaseGUIDEntity
+    public class Person : BaseGUIDEntity
     {
         [MaxLength(36)]
         [Display(Name = "Id гражданина из ФЕРЗЛ")]

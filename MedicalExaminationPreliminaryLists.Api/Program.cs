@@ -1,14 +1,21 @@
 using MedicalExaminationPreliminaryLists.Data;
+using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using TFOMSUploadServer.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<IDiagnosisDictionaryRepository, DiagnosisDictionaryRepository>();
+builder.Services.AddTransient<IDispensaryObservationRepository, DispensaryObservationRepository>();
+builder.Services.AddTransient<IMedProfileDictionaryRepository, MedProfileDictionaryRepository>();
+builder.Services.AddTransient<IPersonRepository, PersonRepository>();
+builder.Services.AddTransient<IZAPRepository, ZAPRepository>();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
