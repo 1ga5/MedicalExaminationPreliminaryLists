@@ -10,9 +10,6 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
 
         [Display(Name = "Id загруженного файла")]
         public Guid UploadFileId { get; set; }
-        
-        [Display(Name = "Код лечебно-профилактического учреждения")]
-        public string LpuType { get; set; } = string.Empty;
 
         [Display(Name = "Год")]
         public string Year { get; set; } = string.Empty;
@@ -37,8 +34,8 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
 
         [Display(Name = "Номер телефона")]
         public string TelephoneNumber { get; set; } = string.Empty;
-        
+
         [Display(Name = "Список диспансерных наблюдений")]
-        public virtual List<DispensaryObservation>? Dispenses { get; set; }
+        public virtual List<DispensaryObservation> Dispenses { get; set; } = new List<DispensaryObservation>();
     }
 }

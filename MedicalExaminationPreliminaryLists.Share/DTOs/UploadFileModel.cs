@@ -1,9 +1,8 @@
-﻿using MedicalExaminationPreliminaryLists.Data.Common;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace MedicalExaminationPreliminaryLists.Data.Models
+namespace MedicalExaminationPreliminaryLists.Share.DTOs
 {
-    public class UploadFile : BaseGUIDEntity
+    public class UploadFileModel : BaseGUIDModel
     {
         [Display(Name = "Название файла")]
         public string FileName { get; set; } = string.Empty;
@@ -12,6 +11,6 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
         public string FilePath { get; set; } = string.Empty;
 
         [Display(Name = "Дата загрузки")]
-        public DateTime UploadDate {  get; set; }
+        public DateTime UploadDate { get; set; }
     }
 }

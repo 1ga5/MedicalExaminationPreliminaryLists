@@ -14,9 +14,12 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
 
         [Display(Name = "Ссылка на объект MedProfileDictionary")]
         public virtual MedProfileDictionary? MedProfileDictionary { get; set; }
-        
+
+        [Display(Name = "Код лечебно-профилактического учреждения")]
+        public string LpuType { get; set; } = string.Empty;
+
         [Display(Name = "Код МКБ")]
-        public int DiagnosisId { get; set; }
+        public string DiagnosisCode { get; set; } = string.Empty;
         
         [Display(Name = "Ссылка на объект DiagnosisDictionary")]
         public virtual DiagnosisDictionary? DiagnosisDictionary { get; set; }

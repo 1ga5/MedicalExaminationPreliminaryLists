@@ -10,8 +10,11 @@ namespace MedicalExaminationPreliminaryLists.Share.DTOs
         [Display(Name = "Id профиля медицинской помощи")]
         public int MedProfileId { get; set; }
 
+        [Display(Name = "Код лечебно-профилактического учреждения")]
+        public string LpuType { get; set; } = string.Empty;
+
         [Display(Name = "Код МКБ")]
-        public int DiagnosisId { get; set; }
+        public string DiagnosisCode { get; set; } = string.Empty;
 
         [Display(Name = "Дата начала")]
         public DateTime BeginDate { get; set; }

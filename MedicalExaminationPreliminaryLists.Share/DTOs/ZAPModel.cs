@@ -6,7 +6,9 @@ namespace MedicalExaminationPreliminaryLists.Share.DTOs
     {
         [Display(Name = "Номер записи")]
         public int ZAPNumber { get; set; }
-        public string LpuType { get; set; } = string.Empty;
+
+        [Display(Name = "Id загруженного файла")]
+        public Guid UploadFileId { get; set; }
 
         [Display(Name = "Год")]
         public string Year { get; set; } = string.Empty;
