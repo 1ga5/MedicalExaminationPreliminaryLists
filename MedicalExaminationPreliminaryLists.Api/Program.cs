@@ -1,7 +1,10 @@
+using System.Text;
 using MedicalExaminationPreliminaryLists.Data;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using TFOMSUploadServer.Infrastructure.Repositories;
+
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,8 @@ builder.Services.AddTransient<IDispensaryObservationRepository, DispensaryObserv
 builder.Services.AddTransient<IMedProfileDictionaryRepository, MedProfileDictionaryRepository>();
 builder.Services.AddTransient<IPersonRepository, PersonRepository>();
 builder.Services.AddTransient<IZAPRepository, ZAPRepository>();
+builder.Services.AddTransient<IUploadFileRepository, UploadFileRepository>();
+
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>

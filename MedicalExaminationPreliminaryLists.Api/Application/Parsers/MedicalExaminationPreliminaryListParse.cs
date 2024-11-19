@@ -27,9 +27,13 @@ namespace MedicalExaminationPreliminaryLists.Api.Application
 
             dispensaryObservationModel.Number = dn.Element("IDCASE").GetIntOrDefault();
             dispensaryObservationModel.MedProfileId = dn.Element("PROFIL").GetIntOrDefault();
-            dispensaryObservationModel.DiagnosisId = dn.Element("DS").GetIntOrDefault();
-            dispensaryObservationModel.BeginDate = dn.Element("D_BEG").GetDateTimeOrDefault();
-            dispensaryObservationModel.EndDate = dn.Element("D_END").GetDateTimeOrDefault();
+            dispensaryObservationModel.DiagnosisCode = dn.Element("DS").GetStringOrDefault();
+
+            var beginDate = dn.Element("D_BEG");
+            dispensaryObservationModel.BeginDate =  string.IsNullOrEmpty(beginDate?.Value) ? DateTime.MinValue : beginDate.GetDateTimeOrDefault();
+
+            var endDate = dn.Element("D_END");
+            dispensaryObservationModel.EndDate = string.IsNullOrEmpty(endDate?.Value) ? DateTime.MaxValue : endDate.GetDateTimeOrDefault();
             dispensaryObservationModel.EndReason = dn.Element("END_RES").GetStringOrDefault();
 
             return dispensaryObservationModel;
