@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using TFOMSUploadServer.Infrastructure.Repositories;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+//AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +27,8 @@ builder.Services.AddTransient<IUploadFileRepository, UploadFileRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TFOMSContextConnection"));
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
 });
 
 var app = builder.Build();
