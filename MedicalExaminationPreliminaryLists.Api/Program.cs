@@ -1,10 +1,13 @@
 using System.Text;
+using MedicalExaminationPreliminaryLists.Api.Application.Services;
 using MedicalExaminationPreliminaryLists.Data;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using TFOMSUploadServer.Infrastructure.Repositories;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+//AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,11 +24,15 @@ builder.Services.AddTransient<IPersonRepository, PersonRepository>();
 builder.Services.AddTransient<IZAPRepository, ZAPRepository>();
 builder.Services.AddTransient<IUploadFileRepository, UploadFileRepository>();
 
+builder.Services.AddTransient<IUploadService, UploadMedicalExaminationPreliminaryListService>();
+
+
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TFOMSContextConnection"));
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
 });
 
 var app = builder.Build();

@@ -1,25 +1,22 @@
 ﻿using MedicalExaminationPreliminaryLists.Api.Application.Services;
 using MedicalExaminationPreliminaryLists.Data.Models;
-using MedicalExaminationPreliminaryLists.Infrastructure.Common;
-using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MedicalExaminationPreliminaryLists.Api.Application.Controllers
+namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
     public class MedicalExaminationPreliminaryListsController : ControllerBase
     {
-        private readonly IZAPRepository _repository;
+        private readonly IUploadService _service;
 
-        public MedicalExaminationPreliminaryListsController(IZAPRepository repository)
+        public MedicalExaminationPreliminaryListsController(IUploadService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         [HttpPost("upload")]
-        public async Task<ActionResult<List<ZAP>>> UploadFile(IFormFile file)
+        public async Task<ActionResult> UploadFile(IFormFile file)
         {
             try
             {
@@ -32,9 +29,11 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Controllers
                     await file.CopyToAsync(stream);
                 };
 
-                List<ZAP> zapList = MedicalExaminationPreliminaryListReader.ReadFromXML(filePath);
+                _service.UploadFile(filePath);
 
-                return Ok(zapList);
+                //List<ZAP> zapList = UploadMedicalExaminationPreliminaryListService.ReadFromXML(filePath);
+
+                return Ok();
             }
             catch (Exception ex)
             {

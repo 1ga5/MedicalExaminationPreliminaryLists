@@ -5,10 +5,10 @@
 	<ZAP>
 		<N_ZAP>1</N_ZAP>
 		<YEAR>2024</YEAR>
-		<FAM>*</FAM>
-		<IM>*</IM>
-		<OT>*</OT>
-		<DR>2017-05-22</DR>
+		<FAM>Иванов</FAM>
+		<IM>Иван</IM>
+		<OT>Иванович</OT>
+		<DR>1980-01-15</DR>
 		<TEL>*</TEL>
 		<DN>
 			<IDCASE>1</IDCASE>
@@ -22,10 +22,10 @@
 	<ZAP>
 		<N_ZAP>2</N_ZAP>
 		<YEAR>2024</YEAR>
-		<FAM>*</FAM>
-		<IM>*</IM>
-		<OT>*</OT>
-		<DR>2017-05-22</DR>
+		<FAM>Петров</FAM>
+		<IM>Петр</IM>
+		<OT>Петрович</OT>
+		<DR>1990-06-20</DR>
 		<TEL>*</TEL>
 		<DN>
 			<IDCASE>2</IDCASE>

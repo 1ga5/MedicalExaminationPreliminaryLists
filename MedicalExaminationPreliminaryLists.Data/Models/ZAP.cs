@@ -11,6 +11,9 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
         [Display(Name = "Id загруженного файла")]
         public Guid UploadFileId { get; set; }
 
+        [Display(Name = "Ссылка на объект UploadFile")]
+        public virtual UploadFile? UploadFile { get; set; }
+
         [Display(Name = "Год")]
         public string Year { get; set; } = string.Empty;
 
@@ -36,6 +39,6 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
         public string TelephoneNumber { get; set; } = string.Empty;
 
         [Display(Name = "Список диспансерных наблюдений")]
-        public virtual List<DispensaryObservation> Dispenses { get; set; } = new List<DispensaryObservation>();
+        public virtual ICollection<DispensaryObservation> Dispenses { get; } = new List<DispensaryObservation>();
     }
 }

@@ -33,8 +33,8 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
         [Display(Name = "Причина прекращения")]
         public string EndReason { get; set; } = string.Empty;
 
-        [Display(Name = "Номер записи")]
-        public int ZAPNumber { get; set; }
+        [Display(Name = "Id записи")]
+        public Guid ZAPId { get; set; }
 
         [Display(Name = "Ссылка на объект ZAP")]
         public virtual ZAP? ZAP { get; set; }
