@@ -1,4 +1,5 @@
 using System.Text;
+using MedicalExaminationPreliminaryLists.Api.Application.Services;
 using MedicalExaminationPreliminaryLists.Data;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,9 @@ builder.Services.AddTransient<IMedProfileDictionaryRepository, MedProfileDiction
 builder.Services.AddTransient<IPersonRepository, PersonRepository>();
 builder.Services.AddTransient<IZAPRepository, ZAPRepository>();
 builder.Services.AddTransient<IUploadFileRepository, UploadFileRepository>();
+
+builder.Services.AddTransient<IUploadService, UploadMedicalExaminationPreliminaryListService>();
+
 
 
 

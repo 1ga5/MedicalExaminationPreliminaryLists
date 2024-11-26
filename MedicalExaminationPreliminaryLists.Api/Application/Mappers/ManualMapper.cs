@@ -10,8 +10,8 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Mappers
             ZAPNumber = zapModel.ZAPNumber,
             Year = zapModel.Year,
             Surname = zapModel.Surname,
-            Name1 = zapModel.Surname,
-            Name2 = zapModel.Surname,
+            Name1 = zapModel.Name1,
+            Name2 = zapModel.Name2,
             Birthday = zapModel.Birthday,
             TelephoneNumber = zapModel.TelephoneNumber
         };

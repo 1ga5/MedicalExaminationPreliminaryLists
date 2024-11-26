@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicalExaminationPreliminaryLists.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241124225806_First")]
-    partial class First
+    [Migration("20241126024420_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,11 +176,8 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ZAPId")
+                    b.Property<Guid>("ZAPId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ZAPNumber")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -348,6 +345,8 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
 
                     b.HasIndex("PersonId");
 
+                    b.HasIndex("UploadFileId");
+
                     b.ToTable("ZAPs");
                 });
 
@@ -363,7 +362,9 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
 
                     b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.ZAP", "ZAP")
                         .WithMany("Dispenses")
-                        .HasForeignKey("ZAPId");
+                        .HasForeignKey("ZAPId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("DiagnosisDictionary");
 
@@ -380,7 +381,15 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.UploadFile", "UploadFile")
+                        .WithMany()
+                        .HasForeignKey("UploadFileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Person");
+
+                    b.Navigation("UploadFile");
                 });
 
             modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.ZAP", b =>

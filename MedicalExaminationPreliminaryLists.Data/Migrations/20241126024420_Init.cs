@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MedicalExaminationPreliminaryLists.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -127,6 +127,12 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                         principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ZAPs_UploadFiles_UploadFileId",
+                        column: x => x.UploadFileId,
+                        principalTable: "UploadFiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,8 +150,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                     BeginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndReason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ZAPNumber = table.Column<int>(type: "int", nullable: false),
-                    ZAPId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ZAPId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     EditUserId = table.Column<int>(type: "int", nullable: false),
                     EditDate = table.Column<DateTime>(type: "date", nullable: false),
@@ -170,7 +175,8 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                         name: "FK_ExaminationDiagnoses_ZAPs_ZAPId",
                         column: x => x.ZAPId,
                         principalTable: "ZAPs",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -192,6 +198,11 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "IX_ZAPs_PersonId",
                 table: "ZAPs",
                 column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ZAPs_UploadFileId",
+                table: "ZAPs",
+                column: "UploadFileId");
         }
 
         /// <inheritdoc />
@@ -199,9 +210,6 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ExaminationDiagnoses");
-
-            migrationBuilder.DropTable(
-                name: "UploadFiles");
 
             migrationBuilder.DropTable(
                 name: "DiagnosisDictionaries");
@@ -214,6 +222,9 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Persons");
+
+            migrationBuilder.DropTable(
+                name: "UploadFiles");
         }
     }
 }
