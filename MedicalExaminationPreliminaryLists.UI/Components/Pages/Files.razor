@@ -1,0 +1,51 @@
+﻿@page "/files"
+@attribute [StreamRendering]
+
+@rendermode RenderMode.InteractiveServer
+@inject IHttpClientFactory ClientFactory
+@using MedicalExaminationPreliminaryLists.Share.DTOs
+<PageTitle>Загруженные файлы</PageTitle>
+
+<h1>Загруженные файлы</h1>
+
+@if (files == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Название файла</th>
+                <th>Дата загрузки</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in files)
+            {
+                <tr>
+                    <td>@file.FileName</td>
+                    <td>@file.UploadDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<UploadFileModel> files = [];
+    HttpClient httpClient = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        httpClient = ClientFactory.CreateClient();
+        httpClient.BaseAddress = new Uri("https://localhost:7112/api/v1/UploadFiles");
+        await LoadData();
+    }
+
+    async Task LoadData()
+    {
+        files = await httpClient.GetFromJsonAsync<List<UploadFileModel>>(httpClient.BaseAddress) ?? files;
+    }
+}
