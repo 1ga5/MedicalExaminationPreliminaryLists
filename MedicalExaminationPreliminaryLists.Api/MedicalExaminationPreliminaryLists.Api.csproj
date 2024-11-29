@@ -28,6 +28,7 @@
     <ProjectReference Include="..\MedicalExaminationPreliminaryLists.Data\MedicalExaminationPreliminaryLists.Data.csproj" />
     <ProjectReference Include="..\MedicalExaminationPreliminaryLists.Infrastructure\MedicalExaminationPreliminaryLists.Infrastructure.csproj" />
     <ProjectReference Include="..\MedicalExaminationPreliminaryLists.Share\MedicalExaminationPreliminaryLists.Share.csproj" />
+    <ProjectReference Include="..\MedicalExaminationPreliminaryLists.UI\MedicalExaminationPreliminaryLists.UI.csproj" />
   </ItemGroup>
 
 </Project>

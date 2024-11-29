@@ -31,10 +31,10 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
         public string ENP { get; set; } = string.Empty;
         [Display(Name = "Признак полной идентификации в ФЕРЗЛ")]
         public bool IsBad { get; set; }
-		[MaxLength(256)]
-		[Display(Name = "Хеш-код")]
-		public string Hash { get; set; } = string.Empty;
+        [MaxLength(256)]
+        [Display(Name = "Хеш-код")]
+        public string Hash { get; set; } = string.Empty;
 
 
-	}
+    }
 }

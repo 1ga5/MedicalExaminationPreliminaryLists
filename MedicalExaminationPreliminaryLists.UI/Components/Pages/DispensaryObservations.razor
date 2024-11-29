@@ -1,0 +1,65 @@
+﻿@page "/dn/{ZapId:guid}"
+@attribute [StreamRendering]
+
+@rendermode RenderMode.InteractiveServer
+@inject IHttpClientFactory ClientFactory
+@using MedicalExaminationPreliminaryLists.Share.DTOs
+<PageTitle>Загруженные файлы</PageTitle>
+
+<h1>Загруженные файлы</h1>
+
+@if (DNs == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Номер</th>
+                <th>Id профиля медицинской помощи</th>
+                <th>Код лечебно-профилактического учреждения</th>
+                <th>Код МКБ</th>
+                <th>Дата начала</th>
+                <th>Дата конца</th>
+                <th>Причина прекращения</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dn in DNs)
+            {
+                <tr>
+                    <td>@dn.Number</td>
+                    <td>@dn.MedProfileId</td>
+                    <td>@dn.LpuType</td>
+                    <td>@dn.DiagnosisCode</td>
+                    <td>@dn.BeginDate</td>
+                    <td>@dn.EndDate</td>
+                    <td>@dn.EndReason</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Guid ZapId { get; set; }
+
+    List<DispensaryObservationModel> DNs = [];
+    HttpClient httpClient = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        httpClient = ClientFactory.CreateClient();
+        httpClient.BaseAddress = new Uri("https://localhost:7112/api/v1/DispensaryObservations");
+        await LoadData();
+    }
+
+    async Task LoadData()
+    {
+        DNs = await httpClient.GetFromJsonAsync<List<DispensaryObservationModel>>($"{httpClient.BaseAddress}/zap/{ZapId}") ?? DNs;
+    }
+}
+
