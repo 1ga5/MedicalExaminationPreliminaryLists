@@ -1,10 +1,14 @@
 ﻿@page "/files"
+
+<link href="/css/styles.css" rel="stylesheet" type="text/css">
+
 @attribute [StreamRendering]
 
 @rendermode RenderMode.InteractiveServer
 @inject IHttpClientFactory ClientFactory
 @inject NavigationManager _navigationManager
 @using MedicalExaminationPreliminaryLists.Share.DTOs
+@using MedicalExaminationPreliminaryLists.Data.Models
 <PageTitle>Загруженные файлы</PageTitle>
 
 <h1>Загруженные файлы</h1>
@@ -21,16 +25,20 @@ else
                 <th>Название файла</th>
                 <th>Дата загрузки</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var file in files)
             {
-                <tr>
+                <tr class="@GetRowClass(file)" @onclick="()=>SelectRow(file)">
                     <td>@file.FileName</td>
                     <td>@file.UploadDate</td>
                     <td>
                         <a href="/zaps/@file.Id">Подробнее</a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" @onclick="@(async ()=> await Delete(file.Id))">Удалить</button>
                     </td>
                 </tr>
             }
@@ -38,9 +46,41 @@ else
     </table>
 }
 
+<div>
+    <p>
+        Название файла:<br />
+        <input @bind-value="fileDTO.FileName" />
+    </p>
+    <p>
+        Дата загрузки:<br />
+        <input @bind-value="fileDTO.UploadDate" />
+    </p>
+    <p>
+        @if (fileDTO.Id == Guid.Empty)
+        {
+            <button type="button" class="btn btn-primary" @onclick="Submit">Добавить</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-primary" @onclick="Submit">Сохранить</button>
+        }
+    </p>
+    <p>
+        <InputFile OnChange="HandleSelectedFile" />
+    </p>
+    <p>
+        <button @onclick="()=>UploadFile()">Загрузить файл</button>
+    </p>
+</div>
+
+
 @code {
     List<UploadFileModel> files = [];
+    UploadFileModel fileDTO = new();
+    private IBrowserFile? selectedFile;
+
     HttpClient httpClient = null!;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,8 +89,76 @@ else
         await LoadData();
     }
 
+
     async Task LoadData()
     {
+        fileDTO.Id = Guid.Empty;
         files = await httpClient.GetFromJsonAsync<List<UploadFileModel>>(httpClient.BaseAddress) ?? files;
+    }
+
+    async Task Delete(Guid id)
+    {
+        await httpClient.DeleteAsync($"{httpClient.BaseAddress}/{id}");
+        await LoadData();
+    }
+
+    async Task Submit()
+    {
+        if (fileDTO.Id == Guid.Empty)
+        {
+            // await httpClient.PostAsJsonAsync(httpClient.BaseAddress, dictionary);
+        }
+        else
+        {
+            await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/{fileDTO.Id}", fileDTO);
+        }
+
+        fileDTO.Id = Guid.Empty;
+        fileDTO.FileName = "";
+        fileDTO.UploadDate = DateTime.Now;
+        await LoadData();
+    }
+
+    void SelectRow(UploadFileModel file)
+    {
+        if (fileDTO.Id == file.Id)
+        {
+            fileDTO.Id = Guid.Empty;
+            fileDTO.FileName = "";
+            fileDTO.UploadDate = DateTime.Now;
+        }
+        else
+        {
+            fileDTO.Id = file.Id;
+            fileDTO.FileName = file.FileName;
+            fileDTO.UploadDate = file.UploadDate;
+        }
+    }
+
+    string GetRowClass(UploadFileModel file)
+    {
+        if (fileDTO.Id == file.Id)
+        {
+            return "selected-row";
+        }
+        return "custom-row";
+    }
+
+    private void HandleSelectedFile(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+    }
+
+    async Task UploadFile()
+    {
+        if (selectedFile is not null)
+        {
+            var content = new MultipartFormDataContent();
+            var fileContent = new StreamContent(selectedFile.OpenReadStream());
+            content.Add(fileContent, "file", selectedFile.Name);
+            await httpClient.PostAsync("https://localhost:7112/api/v1/MedicalExaminationPreliminaryLists/upload", content);
+            selectedFile = null;
+            await LoadData();
+        }
     }
 }

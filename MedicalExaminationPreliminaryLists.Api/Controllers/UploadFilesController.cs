@@ -31,5 +31,41 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 
             return Ok(dictionariesDTO);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<List<UploadFile>>> Update(Guid id, UploadFile newFileDTO)
+        {
+            var file = await _repository.GetByKeyAsync(id);
+
+            if (file == null)
+            {
+                return NotFound();
+            }
+
+            file.FileName = newFileDTO.FileName;
+            file.UploadDate = newFileDTO.UploadDate;
+
+            await _repository.SaveChangesAsync();
+
+            newFileDTO.Id = file.Id;
+
+            return Ok(newFileDTO);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<List<UploadFile>>> Delete(Guid id)
+        {
+            var dictionary = await _repository.GetByKeyAsync(id);
+
+            if (dictionary == null)
+            {
+                return NotFound();
+            }
+
+            await _repository.VirtualDelete(dictionary, 0);
+            await _repository.SaveChangesAsync();
+
+            return Ok("Успешно удалено");
+        }
     }
 }
