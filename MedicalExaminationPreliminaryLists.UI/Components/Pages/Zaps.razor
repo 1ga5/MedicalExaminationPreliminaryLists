@@ -1,0 +1,69 @@
+﻿@page "/zaps/{FileId:guid}"
+@attribute [StreamRendering]
+
+@rendermode RenderMode.InteractiveServer
+@inject IHttpClientFactory ClientFactory
+@using MedicalExaminationPreliminaryLists.Share.DTOs
+<PageTitle>Загруженные файлы</PageTitle>
+
+<h1>Загруженные файлы</h1>
+
+@if (zaps == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Порядковый номер</th>
+                <th>Год</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Номер телефона</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var zap in zaps)
+            {
+                <tr>
+                    <td>@zap.ZAPNumber</td>
+                    <td>@zap.Year</td>
+                    <td>@zap.Surname</td>
+                    <td>@zap.Name1</td>
+                    <td>@zap.Name2</td>
+                    <td>@zap.Birthday</td>
+                    <td>@zap.TelephoneNumber</td>
+                    <td>
+                        <a href="/dn/@zap.Id">Подробнее</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Guid FileId { get; set; }
+
+    List<ZAPModel> zaps = [];
+    HttpClient httpClient = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        httpClient = ClientFactory.CreateClient();
+        httpClient.BaseAddress = new Uri("https://localhost:7112/api/v1/Zaps");
+        await LoadData();
+    }
+
+    async Task LoadData()
+    {
+        zaps = await httpClient.GetFromJsonAsync<List<ZAPModel>>($"{httpClient.BaseAddress}/file/{FileId}") ?? zaps;
+    }
+}
+

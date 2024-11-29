@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalExaminationPrelimina
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalExaminationPreliminaryLists.Share", "MedicalExaminationPreliminaryLists.Share\MedicalExaminationPreliminaryLists.Share.csproj", "{A63914BC-46BA-49BB-8636-00A09DA0DD41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicalExaminationPreliminaryLists.UI", "MedicalExaminationPreliminaryLists.UI\MedicalExaminationPreliminaryLists.UI.csproj", "{E8E40392-CD23-4A81-A8FD-DCD006664E65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalExaminationPreliminaryLists.UI", "MedicalExaminationPreliminaryLists.UI\MedicalExaminationPreliminaryLists.UI.csproj", "{E8E40392-CD23-4A81-A8FD-DCD006664E65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

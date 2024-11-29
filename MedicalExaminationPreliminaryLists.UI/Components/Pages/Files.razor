@@ -3,6 +3,7 @@
 
 @rendermode RenderMode.InteractiveServer
 @inject IHttpClientFactory ClientFactory
+@inject NavigationManager _navigationManager
 @using MedicalExaminationPreliminaryLists.Share.DTOs
 <PageTitle>Загруженные файлы</PageTitle>
 
@@ -19,6 +20,7 @@ else
             <tr>
                 <th>Название файла</th>
                 <th>Дата загрузки</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +29,9 @@ else
                 <tr>
                     <td>@file.FileName</td>
                     <td>@file.UploadDate</td>
+                    <td>
+                        <a href="/zaps/@file.Id">Подробнее</a>
+                    </td>
                 </tr>
             }
         </tbody>
