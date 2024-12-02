@@ -13,7 +13,7 @@
 		<DN>
 			<IDCASE>1</IDCASE>
 			<PROFIL>4</PROFIL>
-			<DS>L50.0</DS>
+			<DS>I14</DS>
 			<D_BEG>2017-05-22</D_BEG>
 			<D_END></D_END>
 			<END_RES></END_RES>
@@ -30,7 +30,7 @@
 		<DN>
 			<IDCASE>2</IDCASE>
 			<PROFIL>68</PROFIL>
-			<DS>H52.0</DS>
+			<DS>E14.0</DS>
 			<D_BEG>2023-06-05</D_BEG>
 			<D_END></D_END>
 			<END_RES></END_RES>
@@ -55,7 +55,7 @@
 		<DN>
 			<IDCASE>4</IDCASE>
 			<PROFIL>12</PROFIL>
-			<DS>D69.4</DS>
+			<DS>D08</DS>
 			<D_BEG>2017-09-27</D_BEG>
 			<D_END></D_END>
 			<END_RES></END_RES>

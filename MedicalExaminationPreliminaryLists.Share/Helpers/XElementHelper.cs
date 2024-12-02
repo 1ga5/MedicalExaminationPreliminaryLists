@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Xml.Linq;
 
-namespace MedicalExaminationPreliminaryLists.Share
+namespace MedicalExaminationPreliminaryLists.Share.Helpers
 {
     public static class XElementHelper
     {

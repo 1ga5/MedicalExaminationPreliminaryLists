@@ -3,6 +3,7 @@ using MedicalExaminationPreliminaryLists.Api.Application.Mappers;
 using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
+using MedicalExaminationPreliminaryLists.Share.Helpers;
 
 namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 {
@@ -31,7 +32,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 
         public void UploadFile (string filePath)
         {
-            MedicalExaminationPreliminaryListParse parser = new();
+            MedicalExaminationPreliminaryListParse parser = new();    
             XDocument xdoc = XDocument.Load(filePath);
             XElement? dnRoot = xdoc.Element("DN");
 
@@ -67,6 +68,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 
                         dispensaryObservationNew.ZAPId = zap.Id;
                         dispensaryObservationNew.ZAP = zap;
+                        dispensaryObservationNew.LpuType = LpuHelper.SetLpu(dispensaryObservationNew.DiagnosisCode);
 
                         _dispensaryObservationRepository.Add(dispensaryObservationNew);
                     }

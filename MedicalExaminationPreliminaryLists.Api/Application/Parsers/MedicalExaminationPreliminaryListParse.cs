@@ -1,5 +1,5 @@
-﻿using MedicalExaminationPreliminaryLists.Share;
-using MedicalExaminationPreliminaryLists.Share.DTOs;
+﻿using MedicalExaminationPreliminaryLists.Share.DTOs;
+using MedicalExaminationPreliminaryLists.Share.Helpers;
 using System.Xml.Linq;
 
 namespace MedicalExaminationPreliminaryLists.Api.Application
