@@ -1,12 +1,14 @@
 ﻿@page "/zaps/{FileId:guid}"
+@inject IJSRuntime JSRuntime
 @attribute [StreamRendering]
 
 @rendermode RenderMode.InteractiveServer
 @inject IHttpClientFactory ClientFactory
 @using MedicalExaminationPreliminaryLists.Share.DTOs
-<PageTitle>Загруженные файлы</PageTitle>
 
-<h1>Загруженные файлы</h1>
+<PageTitle>Записи</PageTitle>
+
+<h1>Записи</h1>
 
 @if (zaps == null)
 {
@@ -14,7 +16,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="fold-table">
         <thead>
             <tr>
                 <th>Порядковый номер</th>
@@ -30,7 +32,7 @@ else
         <tbody>
             @foreach (var zap in zaps)
             {
-                <tr>
+                <tr class="view">
                     <td>@zap.ZAPNumber</td>
                     <td>@zap.Year</td>
                     <td>@zap.Surname</td>
@@ -40,6 +42,40 @@ else
                     <td>@zap.TelephoneNumber</td>
                     <td>
                         <a href="/dn/@zap.Id">Подробнее</a>
+                    </td>
+                </tr>
+
+                <tr class="fold">
+                    <td colspan="8">
+                        <div class="fold-content">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Номер</th>
+                                        <th>Id профиля медицинской помощи</th>
+                                        <th>Код лечебно-профилактического учреждения</th>
+                                        <th>Код МКБ</th>
+                                        <th>Дата начала</th>
+                                        <th>Дата конца</th>
+                                        <th>Причина прекращения</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var dn in DNs.Where(dn => dn.ZAPId == zap.Id))
+                                    {
+                                        <tr>
+                                            <td>@dn.Number</td>
+                                            <td>@dn.MedProfileId</td>
+                                            <td>@dn.LpuType</td>
+                                            <td>@dn.DiagnosisCode</td>
+                                            <td>@dn.BeginDate</td>
+                                            <td>@dn.EndDate</td>
+                                            <td>@dn.EndReason</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </td>
                 </tr>
             }
@@ -52,7 +88,17 @@ else
     public Guid FileId { get; set; }
 
     List<ZAPModel> zaps = [];
+    List<DispensaryObservationModel> DNs = [];
     HttpClient httpClient = null!;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("import", "./scripts.js");
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,6 +110,6 @@ else
     async Task LoadData()
     {
         zaps = await httpClient.GetFromJsonAsync<List<ZAPModel>>($"{httpClient.BaseAddress}/file/{FileId}") ?? zaps;
+        DNs = await httpClient.GetFromJsonAsync<List<DispensaryObservationModel>>($"https://localhost:7112/api/v1/DispensaryObservations/file/{FileId}") ?? DNs;
     }
 }
-

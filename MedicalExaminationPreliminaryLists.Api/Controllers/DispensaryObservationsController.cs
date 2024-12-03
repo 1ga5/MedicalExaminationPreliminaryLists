@@ -1,4 +1,5 @@
-﻿using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
+﻿using MedicalExaminationPreliminaryLists.Infrastructure.Common;
+using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,17 +10,19 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
     [ApiController]
     public class DispensaryObservationsController : ControllerBase
     {
-        private readonly IDispensaryObservationRepository _repository;
+        private readonly IDispensaryObservationRepository _dsRepository;
+        private readonly IZAPRepository _zapRepository;
 
-        public DispensaryObservationsController(IDispensaryObservationRepository repository)
+        public DispensaryObservationsController(IDispensaryObservationRepository dsRepository, IZAPRepository zapRepository)
         {
-            _repository = repository;
+            _dsRepository = dsRepository;
+            _zapRepository = zapRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<DispensaryObservationModel>>> GetAll()
         {
-            var DNs = await _repository.GetAll().ToListAsync();
+            var DNs = await _dsRepository.GetAll().ToListAsync();
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
@@ -38,7 +41,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DispensaryObservationModel>> Get(int id)
         {
-            var dn = await _repository.GetByKeyAsync(id);
+            var dn = await _dsRepository.GetByKeyAsync(id);
 
             if (dn == null)
             {
@@ -62,7 +65,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [HttpGet("zap/{id}")]
         public async Task<ActionResult<ZAPModel>> GetByZapId(Guid id)
         {
-            var DNs = _repository.FindBy(z => z.ZAPId == id);
+            var DNs = _dsRepository.FindBy(z => z.ZAPId == id);
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
@@ -73,6 +76,40 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 BeginDate = dn.BeginDate,
                 EndDate = dn.EndDate,
                 EndReason = dn.EndReason
+            });
+
+            return Ok(DNsDTO);
+        }
+
+        [HttpGet("file/{id}")]
+        public async Task<ActionResult<List<DispensaryObservationModel>>> GetByFileId(Guid id)
+        {
+            var zaps = _zapRepository.FindBy(z => z.UploadFileId == id);
+
+            //var zapsDTO = zaps.Select(z => new ZAPModel
+            //{
+            //    Id = z.Id,
+            //    ZAPNumber = z.ZAPNumber,
+            //    Year = z.Year,
+            //    Surname = z.Surname,
+            //    Name1 = z.Name1,
+            //    Name2 = z.Name2,
+            //    Birthday = z.Birthday,
+            //    TelephoneNumber = z.TelephoneNumber
+            //});
+
+            var DNs = _dsRepository.FindBy(ds => zaps.Contains(ds.ZAP));
+
+            var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
+            {
+                Number = dn.Number,
+                MedProfileId = dn.MedProfileId,
+                LpuType = dn.LpuType,
+                DiagnosisCode = dn.DiagnosisCode,
+                BeginDate = dn.BeginDate,
+                EndDate = dn.EndDate,
+                EndReason = dn.EndReason,
+                ZAPId = dn.ZAPId
             });
 
             return Ok(DNsDTO);
