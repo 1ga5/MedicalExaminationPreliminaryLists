@@ -1,4 +1,5 @@
-﻿using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
+﻿using MedicalExaminationPreliminaryLists.Data.Models;
+using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using MedicalExaminationPreliminaryLists.UI.Components.Pages;
 using Microsoft.AspNetCore.Http;
@@ -58,10 +59,37 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 Name1 = zap.Name1,
                 Name2 = zap.Name2,
                 Birthday = zap.Birthday,
-                TelephoneNumber = zap.TelephoneNumber
+                TelephoneNumber = zap.TelephoneNumber,
+                UploadFileId = zap.UploadFileId
             };
 
             return Ok(zapDTO);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<List<ZAPModel>>> Update(Guid id, ZAPModel zapDTO)
+        {
+            var zap = await _repository.GetByKeyAsync(id);
+
+            if (zap == null)
+            {
+                return NotFound();
+            }
+
+            zap.ZAPNumber = zapDTO.ZAPNumber;
+            zap.Year = zapDTO.Year;
+            zap.Surname = zapDTO.Surname;
+            zap.Name1 = zapDTO.Name1;
+            zap.Name2 = zapDTO.Name2;
+            zap.Birthday = zapDTO.Birthday;
+            zap.TelephoneNumber = zapDTO.TelephoneNumber;
+
+
+            await _repository.SaveChangesAsync();
+
+            zapDTO.Id = zap.Id;
+
+            return Ok(zap);
         }
 
         [HttpGet("file/{id}")]
