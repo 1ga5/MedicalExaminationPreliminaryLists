@@ -31,9 +31,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
         {
             var schemePath = Path.Combine(Directory.GetCurrentDirectory(), "Files/Schemes", "MedicalExaminationPreliminaryListsScheme.xsd");
 
-            XMLValidationHelper xmlValidationHelper = new XMLValidationHelper();
-            xmlValidationHelper.ValidateBySchema(schemePath, filePath);
-
+            XmlValidationHelper.ValidateBySchema(schemePath, filePath);
 
             MedicalExaminationPreliminaryListParse parser = new();    
             XDocument xdoc = XDocument.Load(filePath);

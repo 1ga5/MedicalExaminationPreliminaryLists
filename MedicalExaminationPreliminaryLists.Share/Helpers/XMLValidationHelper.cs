@@ -3,16 +3,16 @@ using System.Xml.Schema;
 
 namespace MedicalExaminationPreliminaryLists.Share.Helpers
 {
-    public class XMLValidationHelper
+    public class XmlValidationHelper
     {
-        private List<string> validationErrors = new List<string>();
-
-        public void ValidateBySchema(string schemaPath, string filePath)
+        public static void ValidateBySchema(string schemaPath, string filePath)
         {
+            List<string> validationErrors = new List<string>();
+
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.Schemas.Add(null, schemaPath);
             settings.ValidationType = ValidationType.Schema;
-            settings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
+            settings.ValidationEventHandler += new ValidationEventHandler((sender, args) => ValidationCallBack(args, validationErrors));
 
             XmlReader reader = XmlReader.Create(filePath, settings);
 
@@ -24,7 +24,7 @@ namespace MedicalExaminationPreliminaryLists.Share.Helpers
             }
         }
 
-        private void ValidationCallBack(object sender, ValidationEventArgs args)
+        private static void ValidationCallBack(ValidationEventArgs args, List<string> validationErrors)
         {
             if (args.Severity == XmlSeverityType.Warning)
             {

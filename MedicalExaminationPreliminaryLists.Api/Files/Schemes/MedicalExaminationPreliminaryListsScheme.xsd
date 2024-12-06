@@ -18,7 +18,7 @@
                   <xs:sequence>
                     <xs:element type="xs:byte" name="IDCASE"/>
                     <xs:element type="xs:byte" name="PROFIL"/>
-                    <xs:element type="xs:string" name="DS"/>
+					<xs:element type="xs:string" name="DS"/>
                     <xs:element type="xs:string" name="D_BEG"/>
                     <xs:element type="xs:string" name="D_END"/>
                     <xs:element type="xs:string" name="END_RES"/>
