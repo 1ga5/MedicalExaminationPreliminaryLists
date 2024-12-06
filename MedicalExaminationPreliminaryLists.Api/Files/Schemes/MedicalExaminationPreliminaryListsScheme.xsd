@@ -1,0 +1,34 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="DN">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="FNAME"/>
+        <xs:element name="ZAP" maxOccurs="unbounded" minOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:byte" name="N_ZAP"/>
+              <xs:element type="xs:short" name="YEAR"/>
+              <xs:element type="xs:string" name="FAM"/>
+              <xs:element type="xs:string" name="IM"/>
+              <xs:element type="xs:string" name="OT"/>
+              <xs:element type="xs:date" name="DR"/>
+              <xs:element type="xs:string" name="TEL"/>
+              <xs:element name="DN" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="IDCASE"/>
+                    <xs:element type="xs:byte" name="PROFIL"/>
+                    <xs:element type="xs:string" name="DS"/>
+                    <xs:element type="xs:string" name="D_BEG"/>
+                    <xs:element type="xs:string" name="D_END"/>
+                    <xs:element type="xs:string" name="END_RES"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using System.Xml.Schema;
 using MedicalExaminationPreliminaryLists.Api.Application.Mappers;
 using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
@@ -9,10 +10,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 {
     public class UploadMedicalExaminationPreliminaryListService : IUploadService
     {
-        public List<ZAP> Zaps { get; private set; } = new();
-        public List<DispensaryObservation> Dispenses { get; private set; } = new();
-
-
         private readonly IZAPRepository _zapRepository;
         private readonly IDispensaryObservationRepository _dispensaryObservationRepository;
         private readonly IPersonRepository _personRepository;
@@ -32,6 +29,12 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 
         public void UploadFile (string filePath)
         {
+            var schemePath = Path.Combine(Directory.GetCurrentDirectory(), "Files/Schemes", "MedicalExaminationPreliminaryListsScheme.xsd");
+
+            XMLValidationHelper xmlValidationHelper = new XMLValidationHelper();
+            xmlValidationHelper.ValidateBySchema(schemePath, filePath);
+
+
             MedicalExaminationPreliminaryListParse parser = new();    
             XDocument xdoc = XDocument.Load(filePath);
             XElement? dnRoot = xdoc.Element("DN");
@@ -77,6 +80,21 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
                 _uploadFileRepository.Save();
                 _zapRepository.Save();
                 _dispensaryObservationRepository.Save();
+            }
+        }
+        static void ValidationEventHandler(object sender, ValidationEventArgs e)
+        {
+            if (e.Severity == XmlSeverityType.Error)
+            {
+                Console.WriteLine("Error: {0}", e.Message);
+            }
+            else if (e.Severity == XmlSeverityType.Warning)
+            {
+                Console.WriteLine("Warning: {0}", e.Message);
+            }
+            else
+            {
+                Console.WriteLine("Ok");
             }
         }
     }

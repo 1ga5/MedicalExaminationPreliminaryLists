@@ -31,8 +31,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 
                 _service.UploadFile(filePath);
 
-                //List<ZAP> zapList = UploadMedicalExaminationPreliminaryListService.ReadFromXML(filePath);
-
                 return Ok();
             }
             catch (Exception ex)
