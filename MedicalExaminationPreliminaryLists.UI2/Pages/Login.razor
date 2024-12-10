@@ -3,6 +3,7 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject ILocalStorageService LocalStorage
 @inject IConfiguration Configuration
+@inject NavigationManager _navigationManager
 
 @using MedicalExaminationPreliminaryLists.Share.DTOs
 
@@ -20,13 +21,14 @@
     async Task HandleLogin()
     {
         var result = await Http.PostAsJsonAsync($"https://localhost:7112/api/Authentication/login", loginModel);
-        var token = await result.Content.ReadAsStringAsync();
-        Console.WriteLine(token);
+        if (result.IsSuccessStatusCode)
+        {
+            var token = await result.Content.ReadAsStringAsync();
 
-        //Just hard coding the token for now :)
-        // var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlNoYWhyaXlhciIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTUxNjIzOTAyMn0.l9E7Oypb-ozndpFUkeVhOYzhtjGEuFmdYdAxhbpXAFY";
+            await LocalStorage.SetItemAsync("token", token);
+            await AuthStateProvider.GetAuthenticationStateAsync();
 
-        await LocalStorage.SetItemAsync("token", token);
-        await AuthStateProvider.GetAuthenticationStateAsync();
+            _navigationManager.NavigateTo("");
+        }
     }
 }
