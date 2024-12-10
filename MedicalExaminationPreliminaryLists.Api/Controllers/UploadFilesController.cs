@@ -1,6 +1,7 @@
 ﻿using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class UploadFilesController : ControllerBase
     {
         private readonly IUploadFileRepository _repository;
@@ -33,6 +35,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UploadFile>>> Update(Guid id, UploadFile newFileDTO)
         {
             var file = await _repository.GetByKeyAsync(id);
@@ -53,6 +56,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UploadFile>>> Delete(Guid id)
         {
             var dictionary = await _repository.GetByKeyAsync(id);

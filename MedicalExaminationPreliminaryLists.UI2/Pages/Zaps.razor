@@ -1,0 +1,129 @@
+﻿@page "/zaps/{FileId:guid}"
+
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@attribute [StreamRendering]
+@inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient httpClient
+@using MedicalExaminationPreliminaryLists.Share.DTOs
+
+<PageTitle>Записи</PageTitle>
+
+<h1>Записи</h1>
+
+@if (zaps == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="fold-table">
+        <thead>
+            <tr>
+                <th>Порядковый номер</th>
+                <th>Год</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Номер телефона</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var zap in zaps)
+            {
+                <tr class="view">
+                    <td>@zap.ZAPNumber</td>
+                    <td>@zap.Year</td>
+                    <td>@zap.Surname</td>
+                    <td>@zap.Name1</td>
+                    <td>@zap.Name2</td>
+                    <td>@zap.Birthday</td>
+                    <td>@zap.TelephoneNumber</td>
+                    <td>
+                        @if (userRole == "Admin")
+                        {
+                            <a href="/zap/change/@zap.Id">Изменить</a>
+                        }
+                    </td>
+                </tr>
+
+                <tr class="fold">
+                    <td colspan="8">
+                        <div class="fold-content">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Номер</th>
+                                        <th>Id профиля медицинской помощи</th>
+                                        <th>Код лечебно-профилактического учреждения</th>
+                                        <th>Код МКБ</th>
+                                        <th>Дата начала</th>
+                                        <th>Дата конца</th>
+                                        <th>Причина прекращения</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var dn in DNs.Where(dn => dn.ZAPId == zap.Id))
+                                    {
+                                        <tr>
+                                            <td>@dn.Number</td>
+                                            <td>@dn.MedProfileId</td>
+                                            <td>@dn.LpuType</td>
+                                            <td>@dn.DiagnosisCode</td>
+                                            <td>@dn.BeginDate</td>
+                                            <td>@dn.EndDate</td>
+                                            <td>@dn.EndReason</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Guid FileId { get; set; }
+
+    List<ZAPModel> zaps = [];
+    List<DispensaryObservationModel> DNs = [];
+
+    private string userRole;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("import", "./scripts.js");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.IsInRole("Admin"))
+        {
+            userRole = "Admin";
+        }
+        else
+        {
+            userRole = "User";
+        }
+        await LoadData();
+    }
+
+    async Task LoadData()
+    {
+        zaps = await httpClient.GetFromJsonAsync<List<ZAPModel>>($"{httpClient.BaseAddress}api/v1/Zaps/file/{FileId}") ?? zaps;
+        DNs = await httpClient.GetFromJsonAsync<List<DispensaryObservationModel>>($"https://localhost:7112/api/v1/DispensaryObservations/file/{FileId}") ?? DNs;
+    }
+}

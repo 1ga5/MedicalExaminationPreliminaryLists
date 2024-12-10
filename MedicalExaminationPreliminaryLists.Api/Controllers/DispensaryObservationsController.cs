@@ -1,6 +1,7 @@
 ﻿using MedicalExaminationPreliminaryLists.Infrastructure.Common;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class DispensaryObservationsController : ControllerBase
     {
         private readonly IDispensaryObservationRepository _dsRepository;
@@ -85,18 +87,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         public async Task<ActionResult<List<DispensaryObservationModel>>> GetByFileId(Guid id)
         {
             var zaps = _zapRepository.FindBy(z => z.UploadFileId == id);
-
-            //var zapsDTO = zaps.Select(z => new ZAPModel
-            //{
-            //    Id = z.Id,
-            //    ZAPNumber = z.ZAPNumber,
-            //    Year = z.Year,
-            //    Surname = z.Surname,
-            //    Name1 = z.Name1,
-            //    Name2 = z.Name2,
-            //    Birthday = z.Birthday,
-            //    TelephoneNumber = z.TelephoneNumber
-            //});
 
             var DNs = _dsRepository.FindBy(ds => zaps.Contains(ds.ZAP));
 

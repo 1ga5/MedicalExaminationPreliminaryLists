@@ -1,11 +1,13 @@
 ﻿using MedicalExaminationPreliminaryLists.Api.Application.Services;
 using MedicalExaminationPreliminaryLists.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class MedicalExaminationPreliminaryListsController : ControllerBase
     {
         private readonly IUploadService _service;
@@ -14,6 +16,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         {
             _service = service;
         }
+
 
         [HttpPost("upload")]
         public async Task<ActionResult> UploadFile(IFormFile file)
