@@ -12,7 +12,7 @@
 
 <h1>Записи</h1>
 
-@if (zaps == null)
+@if (!zaps.Any())
 {
     <p><em>Loading...</em></p>
 }
@@ -43,6 +43,7 @@ else
                     <td>@zap.Birthday</td>
                     <td>@zap.TelephoneNumber</td>
                     <td>
+                        @userRole
                         @if (userRole == "Admin")
                         {
                             <a href="/zap/change/@zap.Id">Изменить</a>
@@ -109,6 +110,7 @@ else
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
+
 
         if (user.IsInRole("Admin"))
         {

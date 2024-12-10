@@ -15,7 +15,7 @@
 
 <h1>Загруженные файлы</h1>
 
-@if (files == null)
+@if (!files.Any())
 {
     <p><em>Loading...</em></p>
 }
