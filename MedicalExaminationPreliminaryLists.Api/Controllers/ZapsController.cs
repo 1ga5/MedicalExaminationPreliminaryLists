@@ -2,6 +2,7 @@
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using MedicalExaminationPreliminaryLists.UI.Components.Pages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class ZapsController : ControllerBase
     {
         private readonly IZAPRepository _repository;
@@ -67,6 +69,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ZAPModel>>> Update(Guid id, ZAPModel zapDTO)
         {
             var zap = await _repository.GetByKeyAsync(id);

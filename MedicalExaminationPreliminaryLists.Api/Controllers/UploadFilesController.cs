@@ -9,6 +9,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class UploadFilesController : ControllerBase
     {
         private readonly IUploadFileRepository _repository;
@@ -19,7 +20,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<List<UploadFileModel>>> GetAll()
         {
             var files = await _repository.GetAll().ToListAsync();
@@ -35,6 +35,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UploadFile>>> Update(Guid id, UploadFile newFileDTO)
         {
             var file = await _repository.GetByKeyAsync(id);
@@ -55,6 +56,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UploadFile>>> Delete(Guid id)
         {
             var dictionary = await _repository.GetByKeyAsync(id);
