@@ -47,6 +47,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 var (status, message) = await _authService.Registration(model, UserRoles.User);
                 if (status == 0)
                 {
+                    Console.WriteLine("FFFF");
                     return BadRequest(message);
                 }
                 return CreatedAtAction(nameof(Register), model);

@@ -15,6 +15,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             _service = service;
         }
 
+
         [HttpPost("upload")]
         public async Task<ActionResult> UploadFile(IFormFile file)
         {
