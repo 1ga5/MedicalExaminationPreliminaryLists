@@ -1,10 +1,8 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace MedicalExaminationPreliminaryLists.UI2
+namespace MedicalExaminationPreliminaryLists.UI
 {
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {

@@ -1,12 +1,8 @@
-﻿using MedicalExaminationPreliminaryLists.Data.Models;
-using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
+﻿using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
-using MedicalExaminationPreliminaryLists.UI.Components.Pages;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
