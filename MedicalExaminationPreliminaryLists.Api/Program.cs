@@ -10,8 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using TFOMSUploadServer.Infrastructure.Repositories;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-//AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-//AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +33,8 @@ builder.Services.AddTransient<IAuthService, AuthService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TFOMSContextConnection"));
-    //options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("TFOMSContextConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
 });
 
 

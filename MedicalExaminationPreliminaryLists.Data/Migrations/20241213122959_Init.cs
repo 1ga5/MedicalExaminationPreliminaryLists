@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace MedicalExaminationPreliminaryLists.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,10 +16,10 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,22 +30,22 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,18 +56,18 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "DiagnosisDictionaries",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: false),
-                    IsActual = table.Column<bool>(type: "bit", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    ParentId = table.Column<int>(type: "integer", nullable: false),
+                    IsActual = table.Column<bool>(type: "boolean", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
-                    EditUserId = table.Column<int>(type: "int", nullable: false),
+                    EditUserId = table.Column<int>(type: "integer", nullable: false),
                     EditDate = table.Column<DateTime>(type: "date", nullable: false),
-                    DeletedUserId = table.Column<int>(type: "int", nullable: false),
+                    DeletedUserId = table.Column<int>(type: "integer", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "date", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,19 +78,19 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "MedProfileDictionaries",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
-                    EditUserId = table.Column<int>(type: "int", nullable: false),
+                    EditUserId = table.Column<int>(type: "integer", nullable: false),
                     EditDate = table.Column<DateTime>(type: "date", nullable: false),
-                    DeletedUserId = table.Column<int>(type: "int", nullable: false),
+                    DeletedUserId = table.Column<int>(type: "integer", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "date", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Code = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    Code = table.Column<int>(type: "integer", nullable: false),
                     BeginDate = table.Column<DateTime>(type: "date", nullable: false),
                     EndDate = table.Column<DateTime>(type: "date", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(350)", maxLength: 350, nullable: false),
-                    Comments = table.Column<string>(type: "nvarchar(350)", maxLength: 350, nullable: false)
+                    Name = table.Column<string>(type: "character varying(350)", maxLength: 350, nullable: false),
+                    Comments = table.Column<string>(type: "character varying(350)", maxLength: 350, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,21 +101,21 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "Persons",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PersonId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Name1 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Name2 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Sex = table.Column<int>(type: "int", nullable: false),
-                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SNILS = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ENP = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    IsBad = table.Column<bool>(type: "bit", nullable: false),
-                    Hash = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PersonId = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false),
+                    Surname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Name1 = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Name2 = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Sex = table.Column<int>(type: "integer", nullable: false),
+                    Birthday = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    SNILS = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    ENP = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
+                    IsBad = table.Column<bool>(type: "boolean", nullable: false),
+                    Hash = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     EditDate = table.Column<DateTime>(type: "date", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "date", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,14 +126,14 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "UploadFiles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FileName = table.Column<string>(type: "text", nullable: false),
+                    FilePath = table.Column<string>(type: "text", nullable: false),
+                    UploadDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     EditDate = table.Column<DateTime>(type: "date", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "date", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,11 +144,11 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -164,11 +165,11 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -185,10 +186,10 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,8 +206,8 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -229,10 +230,10 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -249,20 +250,20 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "ZAPs",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ZAPNumber = table.Column<int>(type: "int", nullable: false),
-                    UploadFileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Year = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PersonId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TelephoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ZAPNumber = table.Column<int>(type: "integer", nullable: false),
+                    UploadFileId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Year = table.Column<string>(type: "text", nullable: false),
+                    PersonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Surname = table.Column<string>(type: "text", nullable: false),
+                    Name1 = table.Column<string>(type: "text", nullable: false),
+                    Name2 = table.Column<string>(type: "text", nullable: false),
+                    Birthday = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TelephoneNumber = table.Column<string>(type: "text", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     EditDate = table.Column<DateTime>(type: "date", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "date", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -285,35 +286,35 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "ExaminationDiagnoses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    MedProfileId = table.Column<int>(type: "int", nullable: false),
-                    MedProfileDictionaryId = table.Column<int>(type: "int", nullable: true),
-                    LpuType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiagnosisCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiagnosisDictionaryId = table.Column<int>(type: "int", nullable: true),
-                    BeginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndReason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ZAPId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Number = table.Column<int>(type: "integer", nullable: false),
+                    MedProfileId = table.Column<int>(type: "integer", nullable: false),
+                    MedProfileDictionaryId = table.Column<int>(type: "integer", nullable: true),
+                    LpuType = table.Column<string>(type: "text", nullable: false),
+                    DiagnosisCode = table.Column<string>(type: "text", nullable: false),
+                    DiagnosisDictionaryId = table.Column<int>(type: "integer", nullable: true),
+                    BeginDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndReason = table.Column<string>(type: "text", nullable: false),
+                    ZAPId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
-                    EditUserId = table.Column<int>(type: "int", nullable: false),
+                    EditUserId = table.Column<int>(type: "integer", nullable: false),
                     EditDate = table.Column<DateTime>(type: "date", nullable: false),
-                    DeletedUserId = table.Column<int>(type: "int", nullable: false),
+                    DeletedUserId = table.Column<int>(type: "integer", nullable: false),
                     DeleteDate = table.Column<DateTime>(type: "date", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ExaminationDiagnoses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExaminationDiagnoses_DiagnosisDictionaries_DiagnosisDictionaryId",
+                        name: "FK_ExaminationDiagnoses_DiagnosisDictionaries_DiagnosisDiction~",
                         column: x => x.DiagnosisDictionaryId,
                         principalTable: "DiagnosisDictionaries",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ExaminationDiagnoses_MedProfileDictionaries_MedProfileDictionaryId",
+                        name: "FK_ExaminationDiagnoses_MedProfileDictionaries_MedProfileDicti~",
                         column: x => x.MedProfileDictionaryId,
                         principalTable: "MedProfileDictionaries",
                         principalColumn: "Id");
@@ -334,8 +335,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -361,8 +361,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExaminationDiagnoses_DiagnosisDictionaryId",
