@@ -111,12 +111,12 @@ else
     async Task LoadData()
     {
         fileDTO.Id = Guid.Empty;
-        files = await httpClient.GetFromJsonAsync<List<UploadFileModel>>($"{httpClient.BaseAddress}api/v1/UploadFiles") ?? files;
+        files = await httpClient.GetFromJsonAsync<List<UploadFileModel>>($"{httpClient.BaseAddress}/UploadFiles") ?? files;
     }
 
     async Task Delete(Guid id)
     {
-        await httpClient.DeleteAsync($"{httpClient.BaseAddress}api/v1/UploadFiles/{id}");
+        await httpClient.DeleteAsync($"{httpClient.BaseAddress}/UploadFiles/{id}");
         await LoadData();
     }
 
@@ -128,7 +128,7 @@ else
         }
         else
         {
-            await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}api/v1/UploadFiles/{fileDTO.Id}", fileDTO);
+            await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/UploadFiles/{fileDTO.Id}", fileDTO);
         }
 
         fileDTO.Id = Guid.Empty;

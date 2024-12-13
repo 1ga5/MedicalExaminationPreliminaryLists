@@ -3,7 +3,6 @@
 
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize(Roles = "Admin")]
-@rendermode RenderMode.InteractiveServer
 @inject HttpClient httpClient
 @inject NavigationManager _navigationManager
 @using MedicalExaminationPreliminaryLists.Share.DTOs
@@ -56,12 +55,12 @@
 
     async Task LoadData()
     {
-        zap = await httpClient.GetFromJsonAsync<ZAPModel>($"{httpClient.BaseAddress}/{ZapId}") ?? zap;
+        zap = await httpClient.GetFromJsonAsync<ZAPModel>($"{httpClient.BaseAddress}/Zaps/{ZapId}") ?? zap;
     }
 
     async Task Submit()
     {
-        await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/{zap.Id}", zap);
+        await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/Zaps/{zap.Id}", zap);
 
         _navigationManager.NavigateTo($"zaps/{zap.UploadFileId}");
         await LoadData();

@@ -1,4 +1,5 @@
-﻿using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
+﻿using MedicalExaminationPreliminaryLists.Data.Models;
+using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -109,6 +110,24 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             });
 
             return Ok(zapsDTO);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<UploadFile>>> Delete(Guid id)
+        {
+            var zap = await _repository.GetByKeyAsync(id);
+
+            if (zap == null)
+            {
+                return NotFound();
+            }
+
+            // TODO: Подвязать пользователя
+            await _repository.VirtualDelete(zap, 0);
+            await _repository.SaveChangesAsync();
+
+            return Ok("Успешно удалено");
         }
     }
 }

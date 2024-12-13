@@ -1,9 +1,11 @@
-﻿using MedicalExaminationPreliminaryLists.Infrastructure.Common;
+﻿using MedicalExaminationPreliminaryLists.Data.Models;
+using MedicalExaminationPreliminaryLists.Infrastructure.Common;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
@@ -92,6 +94,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
+                Id = dn.Id,
                 Number = dn.Number,
                 MedProfileId = dn.MedProfileId,
                 LpuType = dn.LpuType,
@@ -103,6 +106,51 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             });
 
             return Ok(DNsDTO);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<ZAPModel>>> Update(int id, DispensaryObservationModel dnModel)
+        {
+            var dn = await _dsRepository.GetByKeyAsync(id);
+
+            if (dn == null)
+            {
+                return NotFound();
+            }
+
+            dn.Number = dnModel.Number;
+            dn.MedProfileId = dnModel.MedProfileId;
+            dn.LpuType = dnModel.LpuType;
+            dn.DiagnosisCode = dnModel.DiagnosisCode;
+            dn.BeginDate = dnModel.BeginDate;
+            dn.EndDate = dnModel.EndDate;
+            dn.EndReason = dnModel.EndReason;
+
+
+            await _dsRepository.SaveChangesAsync();
+
+            dnModel.Id = dn.Id;
+
+            return Ok(dnModel);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<UploadFile>>> Delete(int id)
+        {
+            var dn = await _dsRepository.GetByKeyAsync(id);
+
+            if (dn == null)
+            {
+                return NotFound();
+            }
+
+            // TODO: Подвязать пользователя
+            await _dsRepository.VirtualDelete(dn, 0);
+            await _dsRepository.SaveChangesAsync();
+
+            return Ok("Успешно удалено");
         }
     }
 }

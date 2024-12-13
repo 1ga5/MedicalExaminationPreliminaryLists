@@ -29,6 +29,7 @@ else
                 <th>Дата рождения</th>
                 <th>Номер телефона</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -42,13 +43,20 @@ else
                     <td>@zap.Name2</td>
                     <td>@zap.Birthday</td>
                     <td>@zap.TelephoneNumber</td>
-                    <td>
-                        @userRole
-                        @if (userRole == "Admin")
-                        {
+                    @if (userRole == "Admin")
+                    {
+                        <td>
                             <a href="/zap/change/@zap.Id">Изменить</a>
-                        }
-                    </td>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" @onclick="@(async ()=> await DeleteZap(zap.Id))">Удалить</button>
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                        <td></td>
+                    }
                 </tr>
 
                 <tr class="fold">
@@ -64,6 +72,7 @@ else
                                         <th>Дата начала</th>
                                         <th>Дата конца</th>
                                         <th>Причина прекращения</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,6 +86,20 @@ else
                                             <td>@dn.BeginDate</td>
                                             <td>@dn.EndDate</td>
                                             <td>@dn.EndReason</td>
+                                            @if (userRole == "Admin")
+                                            {
+                                                <td>
+                                                    <a href="/dn/change/@dn.Id">Изменить</a>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" @onclick="@(async ()=> await DeleteDN(dn.Id))">Удалить</button>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                                <td></td>
+                                            }
                                         </tr>
                                     }
                                 </tbody>
@@ -125,7 +148,19 @@ else
 
     async Task LoadData()
     {
-        zaps = await httpClient.GetFromJsonAsync<List<ZAPModel>>($"{httpClient.BaseAddress}api/v1/Zaps/file/{FileId}") ?? zaps;
+        zaps = await httpClient.GetFromJsonAsync<List<ZAPModel>>($"{httpClient.BaseAddress}/Zaps/file/{FileId}") ?? zaps;
         DNs = await httpClient.GetFromJsonAsync<List<DispensaryObservationModel>>($"https://localhost:7112/api/v1/DispensaryObservations/file/{FileId}") ?? DNs;
+    }
+
+    async Task DeleteZap(Guid id)
+    {
+        await httpClient.DeleteAsync($"{httpClient.BaseAddress}/Zaps/{id}");
+        await LoadData();
+    }
+
+    async Task DeleteDN(int id)
+    {
+        await httpClient.DeleteAsync($"{httpClient.BaseAddress}/DispensaryObservations/{id}");
+        await LoadData();
     }
 }

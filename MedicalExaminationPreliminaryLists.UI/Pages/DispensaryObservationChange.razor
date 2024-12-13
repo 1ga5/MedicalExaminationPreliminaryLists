@@ -1,0 +1,69 @@
+﻿@page "/dn/change/{DispensaryObservationId:int}"
+@attribute [StreamRendering]
+
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "Admin")]
+@inject HttpClient httpClient
+@inject NavigationManager _navigationManager
+@using MedicalExaminationPreliminaryLists.Share.DTOs
+<PageTitle>Изменить запись</PageTitle>
+
+<div>
+    <p>
+        Порядковый номер:<br />
+        <input @bind-value="dn.Number" />
+    </p>
+    <p>
+        Id профиля медицинской помощи:<br />
+        <input @bind-value="dn.MedProfileId" />
+    </p>
+    <p>
+        Код лечебно-профилактического учреждения:<br />
+        <input @bind-value="dn.LpuType" />
+    </p>
+    <p>
+        Код МКБ:<br />
+        <input @bind-value="dn.DiagnosisCode" />
+    </p>
+    <p>
+        Дата начала:<br />
+        <input @bind-value="dn.BeginDate" />
+    </p>
+    <p>
+        Дата конца:<br />
+        <input @bind-value="dn.EndReason" />
+    </p>
+    <p>
+        Причина прекращения:<br />
+        <input @bind-value="dn.EndReason" />
+    </p>
+    <p>
+        <button type="button" class="btn btn-primary" @onclick="Submit">Сохранить</button>
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public int DispensaryObservationId { get; set; }
+
+    DispensaryObservationModel dn = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    async Task LoadData()
+    {
+        dn = await httpClient.GetFromJsonAsync<DispensaryObservationModel>($"{httpClient.BaseAddress}/DispensaryObservations/{DispensaryObservationId}") ?? dn;
+    }
+
+    async Task Submit()
+    {
+        await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/DispensaryObservations/{DispensaryObservationId}", dn);
+
+        _navigationManager.NavigateTo($"/");
+        await LoadData();
+    }
+}
+
