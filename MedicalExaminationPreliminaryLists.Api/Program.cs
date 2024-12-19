@@ -13,6 +13,7 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 //AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -31,12 +32,13 @@ builder.Services.AddTransient<IUploadFileRepository, UploadFileRepository>();
 builder.Services.AddTransient<IUploadService, UploadMedicalExaminationPreliminaryListService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
+    options.UseLazyLoadingProxies();
     options.UseSqlServer(builder.Configuration.GetConnectionString("TFOMSContextConnection"));
     //options.UseNpgsql(builder.Configuration.GetConnectionString("WebApiDatabase"));
 });
-
 
 
 builder.Services.AddCors(options =>

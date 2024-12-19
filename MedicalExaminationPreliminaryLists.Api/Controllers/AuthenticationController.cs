@@ -1,7 +1,6 @@
 ﻿using MedicalExaminationPreliminaryLists.Api.Application.Services;
 using MedicalExaminationPreliminaryLists.Data.Models.Identity;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalExaminationPreliminaryLists.Api.Controllers
@@ -36,6 +35,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             }
         }
 
+
         [HttpPost]
         [Route("registration")]
         public async Task<IActionResult> Register(RegistrationModel model)
@@ -50,7 +50,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                     return BadRequest(message);
                 }
                 return CreatedAtAction(nameof(Register), model);
-
             }
             catch (Exception ex)
             {

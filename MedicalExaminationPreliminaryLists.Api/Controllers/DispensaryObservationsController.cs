@@ -1,11 +1,9 @@
 ﻿using MedicalExaminationPreliminaryLists.Data.Models;
-using MedicalExaminationPreliminaryLists.Infrastructure.Common;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MedicalExaminationPreliminaryLists.Api.Controllers
 {
@@ -14,19 +12,19 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
     [Authorize]
     public class DispensaryObservationsController : ControllerBase
     {
-        private readonly IDispensaryObservationRepository _dsRepository;
+        private readonly IDispensaryObservationRepository _dnRepository;
         private readonly IZAPRepository _zapRepository;
 
-        public DispensaryObservationsController(IDispensaryObservationRepository dsRepository, IZAPRepository zapRepository)
+        public DispensaryObservationsController(IDispensaryObservationRepository dnRepository, IZAPRepository zapRepository)
         {
-            _dsRepository = dsRepository;
+            _dnRepository = dnRepository;
             _zapRepository = zapRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<DispensaryObservationModel>>> GetAll()
         {
-            var DNs = await _dsRepository.GetAll().ToListAsync();
+            var DNs = await _dnRepository.GetAll().ToListAsync();
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
@@ -45,7 +43,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DispensaryObservationModel>> Get(int id)
         {
-            var dn = await _dsRepository.GetByKeyAsync(id);
+            var dn = await _dnRepository.GetByKeyAsync(id);
 
             if (dn == null)
             {
@@ -69,7 +67,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [HttpGet("zap/{id}")]
         public async Task<ActionResult<ZAPModel>> GetByZapId(Guid id)
         {
-            var DNs = _dsRepository.FindBy(z => z.ZAPId == id);
+            var DNs = _dnRepository.FindBy(z => z.ZAPId == id);
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
@@ -90,7 +88,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         {
             var zaps = _zapRepository.FindBy(z => z.UploadFileId == id);
 
-            var DNs = _dsRepository.FindBy(ds => zaps.Contains(ds.ZAP));
+            var DNs = _dnRepository.FindBy(ds => zaps.Contains(ds.ZAP));
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
@@ -112,7 +110,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ZAPModel>>> Update(int id, DispensaryObservationModel dnModel)
         {
-            var dn = await _dsRepository.GetByKeyAsync(id);
+            var dn = await _dnRepository.GetByKeyAsync(id);
 
             if (dn == null)
             {
@@ -128,7 +126,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             dn.EndReason = dnModel.EndReason;
 
 
-            await _dsRepository.SaveChangesAsync();
+            await _dnRepository.SaveChangesAsync();
 
             dnModel.Id = dn.Id;
 
@@ -139,7 +137,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UploadFile>>> Delete(int id)
         {
-            var dn = await _dsRepository.GetByKeyAsync(id);
+            var dn = await _dnRepository.GetByKeyAsync(id);
 
             if (dn == null)
             {
@@ -147,8 +145,8 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             }
 
             // TODO: Подвязать пользователя
-            await _dsRepository.VirtualDelete(dn, 0);
-            await _dsRepository.SaveChangesAsync();
+            await _dnRepository.VirtualDelete(dn, 0);
+            await _dnRepository.SaveChangesAsync();
 
             return Ok("Успешно удалено");
         }

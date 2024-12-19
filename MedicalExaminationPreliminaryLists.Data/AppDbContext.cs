@@ -3,6 +3,7 @@ using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Data.Models.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using MedicalExaminationPreliminaryLists.Data.Models.Identity;
+using System.Reflection.Metadata;
 
 namespace MedicalExaminationPreliminaryLists.Data
 {
@@ -11,6 +12,17 @@ namespace MedicalExaminationPreliminaryLists.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ZAP>()
+                .HasMany(e => e.Dispenses)
+                .WithOne(e => e.ZAP)
+                .HasForeignKey(e => e.ZAPId)
+                .IsRequired();
         }
 
         public DbSet<UploadFile> UploadFiles => Set<UploadFile>();
