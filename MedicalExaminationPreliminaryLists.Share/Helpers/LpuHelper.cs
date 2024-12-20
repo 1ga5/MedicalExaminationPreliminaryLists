@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MedicalExaminationPreliminaryLists.Share.Helpers
+﻿namespace MedicalExaminationPreliminaryLists.Share.Helpers
 {
     public class LpuHelper
     {

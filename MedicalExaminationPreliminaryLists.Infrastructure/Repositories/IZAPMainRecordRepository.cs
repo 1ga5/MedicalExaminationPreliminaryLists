@@ -4,11 +4,12 @@ using MedicalExaminationPreliminaryLists.Infrastructure.Common;
 
 namespace MedicalExaminationPreliminaryLists.Infrastructure.Repositories
 {
-    public interface IZAPRepository : IGUIDRepository<ZAP>, IDisposable
+    public interface IZAPMainRecordRepository : IGUIDRepository<ZAPMainRecord>, IDisposable
     {
     }
-    //Репозиторий IZAPRepository, Наследник GenericRepository, реализует интерфейс IZAPRepository
-    public class ZAPRepository : GenericGUIDRepository<ZAP>, IZAPRepository
+
+    //Репозиторий ZAPMainRecordRepository, Наследник GenericRepository, реализует интерфейс IZAPMainRecordRepository
+    public class ZAPRepository : GenericGUIDRepository<ZAPMainRecord>, IZAPMainRecordRepository
     {
         public ZAPRepository(AppDbContext contextFactory) : base(contextFactory)
         {

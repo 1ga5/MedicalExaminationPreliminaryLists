@@ -10,13 +10,13 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 {
     public class UploadMedicalExaminationPreliminaryListService : IUploadService
     {
-        private readonly IZAPRepository _zapRepository;
+        private readonly IZAPMainRecordRepository _zapRepository;
         private readonly IDispensaryObservationRepository _dispensaryObservationRepository;
         private readonly IPersonRepository _personRepository;
         private readonly IUploadFileRepository _uploadFileRepository;
 
 
-        public UploadMedicalExaminationPreliminaryListService(IZAPRepository zapRepository,
+        public UploadMedicalExaminationPreliminaryListService(IZAPMainRecordRepository zapRepository,
             IDispensaryObservationRepository dispensaryObservationRepository,
             IPersonRepository personRepository,
             IUploadFileRepository uploadFileRepository)
@@ -49,9 +49,9 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 
                 foreach (XElement zapElement in dnRoot.Elements("ZAP"))
                 {
-                    ZAPModel zapDTO = parser.GetZAP(zapElement);
+                    ZAPMainRecordModel zapDTO = parser.GetZAP(zapElement);
 
-                    ZAP zap = zapDTO.ToEntity();
+                    ZAPMainRecord zap = zapDTO.ToEntity();
 
                     zap.UploadFileId = uploadFile.Id;
                     zap.UploadFile = uploadFile;
@@ -67,9 +67,9 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 
                         DispensaryObservation dispensaryObservationNew = dispensaryObservationDTO.ToEntity();
 
-                        dispensaryObservationNew.ZAPId = zap.Id;
+                        dispensaryObservationNew.ZAPMainRecordId = zap.Id;
                         dispensaryObservationNew.ZAP = zap;
-                        dispensaryObservationNew.LpuType = LpuHelper.SetLpu(dispensaryObservationNew.DiagnosisCode);
+                        dispensaryObservationNew.LpuType = LpuHelper.SetLpu(dispensaryObservationNew.DiagnosisId.ToString());
 
                         _dispensaryObservationRepository.Add(dispensaryObservationNew);
                     }
@@ -78,21 +78,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
                 _uploadFileRepository.Save();
                 _zapRepository.Save();
                 _dispensaryObservationRepository.Save();
-            }
-        }
-        static void ValidationEventHandler(object sender, ValidationEventArgs e)
-        {
-            if (e.Severity == XmlSeverityType.Error)
-            {
-                Console.WriteLine("Error: {0}", e.Message);
-            }
-            else if (e.Severity == XmlSeverityType.Warning)
-            {
-                Console.WriteLine("Warning: {0}", e.Message);
-            }
-            else
-            {
-                Console.WriteLine("Ok");
             }
         }
     }

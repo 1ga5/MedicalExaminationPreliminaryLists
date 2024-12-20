@@ -12,18 +12,21 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
         [Display(Name = "Id профиля медицинской помощи")]
         public int MedProfileId { get; set; }
 
-        [Display(Name = "Ссылка на объект MedProfileDictionary")]
-        public virtual MedProfileDictionary? MedProfileDictionary { get; set; }
+        [Display(Name = "Ссылка на объект MedProfile")]
+        public virtual MedProfile? MedProfile { get; set; }
 
         [Display(Name = "Код лечебно-профилактического учреждения")]
         public string LpuType { get; set; } = string.Empty;
 
-        [Display(Name = "Код МКБ")]
+        [Display(Name = "Id болезни")]
+        public int DiagnosisId { get; set; }
+        
+        [Display(Name = "Ссылка на объект Diagnosis")]
+        public virtual Diagnosis? Diagnosis { get; set; }
+        
+        [Display(Name = "Код болезни")]
         public string DiagnosisCode { get; set; } = string.Empty;
-        
-        [Display(Name = "Ссылка на объект DiagnosisDictionary")]
-        public virtual DiagnosisDictionary? DiagnosisDictionary { get; set; }
-        
+
         [Display(Name = "Дата начала")]
         public DateTime BeginDate { get; set; }
         
@@ -34,9 +37,9 @@ namespace MedicalExaminationPreliminaryLists.Data.Models
         public string EndReason { get; set; } = string.Empty;
 
         [Display(Name = "Id записи")]
-        public Guid ZAPId { get; set; }
+        public Guid ZAPMainRecordId { get; set; }
 
         [Display(Name = "Ссылка на объект ZAP")]
-        public virtual ZAP? ZAP { get; set; }
+        public virtual ZAPMainRecord? ZAP { get; set; }
     }
 }

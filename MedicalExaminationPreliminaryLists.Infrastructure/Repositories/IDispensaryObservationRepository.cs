@@ -7,7 +7,8 @@ namespace MedicalExaminationPreliminaryLists.Infrastructure.Repositories
     public interface IDispensaryObservationRepository : IRepository<DispensaryObservation>, IDisposable
     {
     }
-    //Репозиторий IDispensaryObservationRepository, Наследник GenericRepository, реализует интерфейс IDispensaryObservationRepository
+
+    //Репозиторий DispensaryObservationRepository, Наследник GenericRepository, реализует интерфейс IDispensaryObservationRepository
     public class DispensaryObservationRepository : GenericRepository<DispensaryObservation>, IDispensaryObservationRepository
     {
         public DispensaryObservationRepository(AppDbContext contextFactory) : base(contextFactory)

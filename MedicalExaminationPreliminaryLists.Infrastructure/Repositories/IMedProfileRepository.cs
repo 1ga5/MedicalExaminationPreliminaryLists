@@ -4,13 +4,14 @@ using MedicalExaminationPreliminaryLists.Infrastructure.Common;
 
 namespace TFOMSUploadServer.Infrastructure.Repositories
 {
-    public interface IMedProfileDictionaryRepository : IRepository<MedProfileDictionary>, IDisposable
+    public interface IMedProfileRepository : IRepository<MedProfile>, IDisposable
     {
     }
-    //Репозиторий IMedProfileDictionaryRepository, Наследник GenericRepository, реализует интерфейс IMedProfileRepository
-    public class MedProfileDictionaryRepository : GenericRepository<MedProfileDictionary>, IMedProfileDictionaryRepository
+
+    //Репозиторий MedProfileRepository, Наследник GenericRepository, реализует интерфейс IMedProfileRepository
+    public class MedProfileRepository : GenericRepository<MedProfile>, IMedProfileRepository
     {
-        public MedProfileDictionaryRepository(AppDbContext contextFactory) : base(contextFactory)
+        public MedProfileRepository(AppDbContext contextFactory) : base(contextFactory)
         {
         }
     }

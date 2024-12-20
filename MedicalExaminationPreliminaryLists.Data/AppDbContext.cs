@@ -3,7 +3,6 @@ using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Data.Models.Dictionaries;
 using Microsoft.EntityFrameworkCore;
 using MedicalExaminationPreliminaryLists.Data.Models.Identity;
-using System.Reflection.Metadata;
 
 namespace MedicalExaminationPreliminaryLists.Data
 {
@@ -18,18 +17,18 @@ namespace MedicalExaminationPreliminaryLists.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ZAP>()
+            modelBuilder.Entity<ZAPMainRecord>()
                 .HasMany(e => e.Dispenses)
                 .WithOne(e => e.ZAP)
-                .HasForeignKey(e => e.ZAPId)
+                .HasForeignKey(e => e.ZAPMainRecordId)
                 .IsRequired();
         }
 
         public DbSet<UploadFile> UploadFiles => Set<UploadFile>();
-        public DbSet<DiagnosisDictionary> DiagnosisDictionaries => Set<DiagnosisDictionary>();
-        public DbSet<MedProfileDictionary> MedProfileDictionaries => Set<MedProfileDictionary>();
+        public DbSet<Diagnosis> DiagnosisDictionaries => Set<Diagnosis>();
+        public DbSet<MedProfile> MedProfileDictionaries => Set<MedProfile>();
         public DbSet<Person> Persons => Set<Person>();
-        public DbSet<ZAP> ZAPs => Set<ZAP>();
-        public DbSet<DispensaryObservation> ExaminationDiagnoses => Set<DispensaryObservation>();
+        public DbSet<ZAPMainRecord> ZAPMainRecords => Set<ZAPMainRecord>();
+        public DbSet<DispensaryObservation> DispensaryObservations => Set<DispensaryObservation>();
     }
 }

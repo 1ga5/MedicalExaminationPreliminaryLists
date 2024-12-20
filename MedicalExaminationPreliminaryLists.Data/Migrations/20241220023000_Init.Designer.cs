@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicalExaminationPreliminaryLists.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241209222453_init")]
-    partial class init
+    [Migration("20241220023000_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,11 +21,14 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.Dictionaries.DiagnosisDictionary", b =>
+            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.Dictionaries.Diagnosis", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +73,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                     b.ToTable("DiagnosisDictionaries");
                 });
 
-            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.Dictionaries.MedProfileDictionary", b =>
+            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.Dictionaries.MedProfile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,11 +143,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                     b.Property<int>("DeletedUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DiagnosisCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DiagnosisDictionaryId")
+                    b.Property<int>("DiagnosisId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EditDate")
@@ -167,27 +166,24 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MedProfileDictionaryId")
-                        .HasColumnType("int");
-
                     b.Property<int>("MedProfileId")
                         .HasColumnType("int");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ZAPId")
+                    b.Property<Guid>("ZAPMainRecordId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DiagnosisDictionaryId");
+                    b.HasIndex("DiagnosisId");
 
-                    b.HasIndex("MedProfileDictionaryId");
+                    b.HasIndex("MedProfileId");
 
-                    b.HasIndex("ZAPId");
+                    b.HasIndex("ZAPMainRecordId");
 
-                    b.ToTable("ExaminationDiagnoses");
+                    b.ToTable("DispensaryObservations");
                 });
 
             modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.Identity.User", b =>
@@ -360,7 +356,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                     b.ToTable("UploadFiles");
                 });
 
-            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.ZAP", b =>
+            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.ZAPMainRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -416,7 +412,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
 
                     b.HasIndex("UploadFileId");
 
-                    b.ToTable("ZAPs");
+                    b.ToTable("ZAPMainRecords");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -554,28 +550,32 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
 
             modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.DispensaryObservation", b =>
                 {
-                    b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.Dictionaries.DiagnosisDictionary", "DiagnosisDictionary")
+                    b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.Dictionaries.Diagnosis", "Diagnosis")
                         .WithMany()
-                        .HasForeignKey("DiagnosisDictionaryId");
-
-                    b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.Dictionaries.MedProfileDictionary", "MedProfileDictionary")
-                        .WithMany()
-                        .HasForeignKey("MedProfileDictionaryId");
-
-                    b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.ZAP", "ZAP")
-                        .WithMany("Dispenses")
-                        .HasForeignKey("ZAPId")
+                        .HasForeignKey("DiagnosisId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DiagnosisDictionary");
+                    b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.Dictionaries.MedProfile", "MedProfile")
+                        .WithMany()
+                        .HasForeignKey("MedProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("MedProfileDictionary");
+                    b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.ZAPMainRecord", "ZAP")
+                        .WithMany("Dispenses")
+                        .HasForeignKey("ZAPMainRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Diagnosis");
+
+                    b.Navigation("MedProfile");
 
                     b.Navigation("ZAP");
                 });
 
-            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.ZAP", b =>
+            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.ZAPMainRecord", b =>
                 {
                     b.HasOne("MedicalExaminationPreliminaryLists.Data.Models.Person", "Person")
                         .WithMany()
@@ -645,7 +645,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.ZAP", b =>
+            modelBuilder.Entity("MedicalExaminationPreliminaryLists.Data.Models.ZAPMainRecord", b =>
                 {
                     b.Navigation("Dispenses");
                 });

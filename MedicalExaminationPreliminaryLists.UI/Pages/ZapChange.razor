@@ -51,7 +51,7 @@
     [Parameter]
     public Guid ZapId { get; set; }
 
-    ZAPModel zap = new();
+    ZAPMainRecordModel zap = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,7 +60,7 @@
 
     async Task LoadData()
     {
-        zap = await httpClient.GetFromJsonAsync<ZAPModel>($"{httpClient.BaseAddress}/Zaps/{ZapId}") ?? zap;
+        zap = await httpClient.GetFromJsonAsync<ZAPMainRecordModel>($"{httpClient.BaseAddress}/Zaps/{ZapId}") ?? zap;
     }
 
     async Task Submit()

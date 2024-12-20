@@ -15,7 +15,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
     {
         private readonly IDispensaryObservationRepository _repository;
 
-        public DispensaryObservationsController(IDispensaryObservationRepository dnRepository, IZAPRepository zapRepository)
+        public DispensaryObservationsController(IDispensaryObservationRepository dnRepository, IZAPMainRecordRepository zapRepository)
         {
             _repository = dnRepository;
         }
@@ -30,11 +30,11 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 Number = dn.Number,
                 MedProfileId = dn.MedProfileId,
                 LpuType = dn.LpuType,
-                DiagnosisCode = dn.DiagnosisCode,
+                DiagnosisId = dn.DiagnosisId,
                 BeginDate = dn.BeginDate,
                 EndDate = dn.EndDate,
                 EndReason = dn.EndReason,
-                ZAPId = dn.ZAPId
+                ZAPMainRecordId = dn.ZAPMainRecordId
             });
 
             return Ok(DNsDTO);
@@ -55,31 +55,31 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 Number = dn.Number,
                 MedProfileId = dn.MedProfileId,
                 LpuType = dn.LpuType,
-                DiagnosisCode = dn.DiagnosisCode,
+                DiagnosisId = dn.DiagnosisId,
                 BeginDate = dn.BeginDate,
                 EndDate = dn.EndDate,
                 EndReason = dn.EndReason,
-                ZAPId = dn.ZAPId
+                ZAPMainRecordId = dn.ZAPMainRecordId
             };
 
             return Ok(dnDTO);
         }
 
         [HttpGet("zap/{id}")]
-        public async Task<ActionResult<ZAPModel>> GetByZapId(Guid id)
+        public async Task<ActionResult<ZAPMainRecordModel>> GetByZapId(Guid id)
         {
-            var DNs = _repository.FindBy(z => z.ZAPId == id);
+            var DNs = _repository.FindBy(z => z.ZAPMainRecordId == id);
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
                 Number = dn.Number,
                 MedProfileId = dn.MedProfileId,
                 LpuType = dn.LpuType,
-                DiagnosisCode = dn.DiagnosisCode,
+                DiagnosisId = dn.DiagnosisId,
                 BeginDate = dn.BeginDate,
                 EndDate = dn.EndDate,
                 EndReason = dn.EndReason,
-                ZAPId = dn.ZAPId
+                ZAPMainRecordId = dn.ZAPMainRecordId
             });
 
             return Ok(DNsDTO);
@@ -107,7 +107,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<List<ZAPModel>>> Update(int id, DispensaryObservationModel dnModel)
+        public async Task<ActionResult<List<ZAPMainRecordModel>>> Update(int id, DispensaryObservationModel dnModel)
         {
             var dn = await _repository.GetByKeyAsync(id);
 
@@ -119,7 +119,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             dn.Number = dnModel.Number;
             dn.MedProfileId = dnModel.MedProfileId;
             dn.LpuType = dnModel.LpuType;
-            dn.DiagnosisCode = dnModel.DiagnosisCode;
+            dn.DiagnosisId = dnModel.DiagnosisId;
             dn.BeginDate = dnModel.BeginDate;
             dn.EndDate = dnModel.EndDate;
             dn.EndReason = dnModel.EndReason;

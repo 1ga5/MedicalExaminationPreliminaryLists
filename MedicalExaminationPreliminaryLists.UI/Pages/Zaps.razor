@@ -85,7 +85,7 @@ else
                                             <td>@dn.Number</td>
                                             <td>@dn.MedProfileId</td>
                                             <td>@dn.LpuType</td>
-                                            <td>@dn.DiagnosisCode</td>
+                                            <td>@dn.DiagnosisId</td>
                                             <td>@dn.BeginDate</td>
                                             <td>@dn.EndDate</td>
                                             <td>@dn.EndReason</td>
@@ -120,7 +120,7 @@ else
     [Parameter]
     public Guid FileId { get; set; }
 
-    List<ZAPModel> zaps = [];
+    List<ZAPMainRecordModel> zaps = [];
     private string userRole = string.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -150,7 +150,7 @@ else
 
     async Task LoadData()
     {
-        zaps = await httpClient.GetFromJsonAsync<List<ZAPModel>>($"{httpClient.BaseAddress}/Zaps/file/{FileId}") ?? zaps;
+        zaps = await httpClient.GetFromJsonAsync<List<ZAPMainRecordModel>>($"{httpClient.BaseAddress}/Zaps/file/{FileId}") ?? zaps;
     }
 
     async Task DeleteZap(Guid id)

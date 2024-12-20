@@ -6,9 +6,9 @@ namespace MedicalExaminationPreliminaryLists.Api.Application
 {
     public class MedicalExaminationPreliminaryListParse : IMedicalExaminationPreliminaryListParse
     {
-        public ZAPModel GetZAP(XElement zap)
+        public ZAPMainRecordModel GetZAP(XElement zap)
         {
-            ZAPModel zapModel = new ZAPModel();
+            ZAPMainRecordModel zapModel = new ZAPMainRecordModel();
 
             zapModel.ZAPNumber = zap.Element("N_ZAP").GetIntOrDefault();
             zapModel.Year = zap.Element("YEAR").GetStringOrDefault();
@@ -27,7 +27,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Application
 
             dispensaryObservationModel.Number = dn.Element("IDCASE").GetIntOrDefault();
             dispensaryObservationModel.MedProfileId = dn.Element("PROFIL").GetIntOrDefault();
-            dispensaryObservationModel.DiagnosisCode = dn.Element("DS").GetStringOrDefault();
+            dispensaryObservationModel.DiagnosisId = dn.Element("DS").GetIntOrDefault();
 
             var beginDate = dn.Element("D_BEG");
             dispensaryObservationModel.BeginDate =  string.IsNullOrEmpty(beginDate?.Value) ? DateTime.MinValue : beginDate.GetDateTimeOrDefault();

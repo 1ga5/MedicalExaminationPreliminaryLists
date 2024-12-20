@@ -27,7 +27,7 @@
     </p>
     <p>
         Код МКБ:<br />
-        <input @bind-value="dn.DiagnosisCode" />
+        <input @bind-value="dn.DiagnosisId" />
     </p>
     <p>
         Дата начала:<br />
@@ -66,7 +66,7 @@
     {
         await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/DispensaryObservations/{DispensaryObservationId}", dn);
         
-        var zap = await httpClient.GetFromJsonAsync<ZAPModel>($"{httpClient.BaseAddress}/Zaps/{dn.ZAPId}");
+        var zap = await httpClient.GetFromJsonAsync<ZAPMainRecordModel>($"{httpClient.BaseAddress}/Zaps/{dn.ZAPMainRecordId}");
         _navigationManager.NavigateTo($"zaps/{zap.UploadFileId}");
         await LoadData();
     }

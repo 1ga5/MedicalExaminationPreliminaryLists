@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MedicalExaminationPreliminaryLists.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -246,7 +246,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ZAPs",
+                name: "ZAPMainRecords",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -266,15 +266,15 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ZAPs", x => x.Id);
+                    table.PrimaryKey("PK_ZAPMainRecords", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ZAPs_Persons_PersonId",
+                        name: "FK_ZAPMainRecords_Persons_PersonId",
                         column: x => x.PersonId,
                         principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ZAPs_UploadFiles_UploadFileId",
+                        name: "FK_ZAPMainRecords_UploadFiles_UploadFileId",
                         column: x => x.UploadFileId,
                         principalTable: "UploadFiles",
                         principalColumn: "Id",
@@ -282,21 +282,19 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExaminationDiagnoses",
+                name: "DispensaryObservations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Number = table.Column<int>(type: "int", nullable: false),
                     MedProfileId = table.Column<int>(type: "int", nullable: false),
-                    MedProfileDictionaryId = table.Column<int>(type: "int", nullable: true),
                     LpuType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiagnosisCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiagnosisDictionaryId = table.Column<int>(type: "int", nullable: true),
+                    DiagnosisId = table.Column<int>(type: "int", nullable: false),
                     BeginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndReason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ZAPId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ZAPMainRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     EditUserId = table.Column<int>(type: "int", nullable: false),
                     EditDate = table.Column<DateTime>(type: "date", nullable: false),
@@ -306,21 +304,23 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExaminationDiagnoses", x => x.Id);
+                    table.PrimaryKey("PK_DispensaryObservations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ExaminationDiagnoses_DiagnosisDictionaries_DiagnosisDictionaryId",
-                        column: x => x.DiagnosisDictionaryId,
+                        name: "FK_DispensaryObservations_DiagnosisDictionaries_DiagnosisId",
+                        column: x => x.DiagnosisId,
                         principalTable: "DiagnosisDictionaries",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ExaminationDiagnoses_MedProfileDictionaries_MedProfileDictionaryId",
-                        column: x => x.MedProfileDictionaryId,
+                        name: "FK_DispensaryObservations_MedProfileDictionaries_MedProfileId",
+                        column: x => x.MedProfileId,
                         principalTable: "MedProfileDictionaries",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ExaminationDiagnoses_ZAPs_ZAPId",
-                        column: x => x.ZAPId,
-                        principalTable: "ZAPs",
+                        name: "FK_DispensaryObservations_ZAPMainRecords_ZAPMainRecordId",
+                        column: x => x.ZAPMainRecordId,
+                        principalTable: "ZAPMainRecords",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -365,28 +365,28 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExaminationDiagnoses_DiagnosisDictionaryId",
-                table: "ExaminationDiagnoses",
-                column: "DiagnosisDictionaryId");
+                name: "IX_DispensaryObservations_DiagnosisId",
+                table: "DispensaryObservations",
+                column: "DiagnosisId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExaminationDiagnoses_MedProfileDictionaryId",
-                table: "ExaminationDiagnoses",
-                column: "MedProfileDictionaryId");
+                name: "IX_DispensaryObservations_MedProfileId",
+                table: "DispensaryObservations",
+                column: "MedProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ExaminationDiagnoses_ZAPId",
-                table: "ExaminationDiagnoses",
-                column: "ZAPId");
+                name: "IX_DispensaryObservations_ZAPMainRecordId",
+                table: "DispensaryObservations",
+                column: "ZAPMainRecordId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ZAPs_PersonId",
-                table: "ZAPs",
+                name: "IX_ZAPMainRecords_PersonId",
+                table: "ZAPMainRecords",
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ZAPs_UploadFileId",
-                table: "ZAPs",
+                name: "IX_ZAPMainRecords_UploadFileId",
+                table: "ZAPMainRecords",
                 column: "UploadFileId");
         }
 
@@ -409,7 +409,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ExaminationDiagnoses");
+                name: "DispensaryObservations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -424,7 +424,7 @@ namespace MedicalExaminationPreliminaryLists.Data.Migrations
                 name: "MedProfileDictionaries");
 
             migrationBuilder.DropTable(
-                name: "ZAPs");
+                name: "ZAPMainRecords");
 
             migrationBuilder.DropTable(
                 name: "Persons");

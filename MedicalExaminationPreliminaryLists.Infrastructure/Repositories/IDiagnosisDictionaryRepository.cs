@@ -4,13 +4,14 @@ using MedicalExaminationPreliminaryLists.Infrastructure.Common;
 
 namespace MedicalExaminationPreliminaryLists.Infrastructure.Repositories
 {
-    public interface IDiagnosisDictionaryRepository : IRepository<DiagnosisDictionary>, IDisposable
+    public interface IDiagnosisRepository : IRepository<Diagnosis>, IDisposable
     {
     }
-    //Репозиторий DiagnosisDictionaryRepository, Наследник GenericRepository, реализует интерфейс IDiagnosisDictionaryRepository
-    public class DiagnosisDictionaryRepository : GenericRepository<DiagnosisDictionary>, IDiagnosisDictionaryRepository
+
+    //Репозиторий DiagnosisRepository, Наследник GenericRepository, реализует интерфейс IDiagnosisRepository
+    public class DiagnosisRepository : GenericRepository<Diagnosis>, IDiagnosisRepository
     {
-        public DiagnosisDictionaryRepository(AppDbContext contextFactory) : base(contextFactory)
+        public DiagnosisRepository(AppDbContext contextFactory) : base(contextFactory)
         {
         }
     }

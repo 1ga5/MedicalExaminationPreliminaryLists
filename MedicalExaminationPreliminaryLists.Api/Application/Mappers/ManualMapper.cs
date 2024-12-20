@@ -5,7 +5,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Mappers
 {
     public static class ManualMapper
     {
-        public static ZAP ToEntity(this ZAPModel zapModel) => new ZAP
+        public static ZAPMainRecord ToEntity(this ZAPMainRecordModel zapModel) => new ZAPMainRecord
         {
             ZAPNumber = zapModel.ZAPNumber,
             Year = zapModel.Year,
@@ -20,7 +20,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Mappers
         {
             Number = dispensaryObservationModel.Number,
             MedProfileId = dispensaryObservationModel.MedProfileId,
-            DiagnosisCode = dispensaryObservationModel.DiagnosisCode,
+            DiagnosisId = dispensaryObservationModel.DiagnosisId,
             BeginDate = dispensaryObservationModel.BeginDate,
             EndDate = dispensaryObservationModel.EndDate,
             EndReason = dispensaryObservationModel.EndReason,

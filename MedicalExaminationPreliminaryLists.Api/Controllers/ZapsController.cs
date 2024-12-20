@@ -1,5 +1,4 @@
-﻿using MedicalExaminationPreliminaryLists.Api.Application.Mappers;
-using MedicalExaminationPreliminaryLists.Data.Models;
+﻿using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -13,21 +12,21 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
     [Authorize]
     public class ZapsController : ControllerBase
     {
-        private readonly IZAPRepository _repository;
+        private readonly IZAPMainRecordRepository _repository;
         private readonly IPersonRepository _personRepository;
 
-        public ZapsController(IZAPRepository repository, IPersonRepository personRepository)
+        public ZapsController(IZAPMainRecordRepository repository, IPersonRepository personRepository)
         {
             _repository = repository;
             _personRepository = personRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ZAPModel>>> GetAll()
+        public async Task<ActionResult<List<ZAPMainRecordModel>>> GetAll()
         {
             var zaps = await _repository.GetAll().ToListAsync();
 
-            var zapsDTO = zaps.Select(z => new ZAPModel
+            var zapsDTO = zaps.Select(z => new ZAPMainRecordModel
             {
                 Id = z.Id,
                 ZAPNumber = z.ZAPNumber,
@@ -43,7 +42,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ZAPModel>> Get(Guid id)
+        public async Task<ActionResult<ZAPMainRecordModel>> Get(Guid id)
         {
             var zap = await _repository.GetByKeyAsync(id);
             
@@ -52,7 +51,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 return NotFound();
             }
 
-            var zapDTO = new ZAPModel
+            var zapDTO = new ZAPMainRecordModel
             {
                 Id = zap.Id,
                 ZAPNumber = zap.ZAPNumber,
@@ -69,11 +68,11 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpGet("file/{id}")]
-        public async Task<ActionResult<ZAPModel>> GetByFileId(Guid id)
+        public async Task<ActionResult<ZAPMainRecordModel>> GetByFileId(Guid id)
         {
             var zaps = _repository.FindBy(z => z.UploadFileId == id).Include(z => z.Dispenses).ToList();
 
-            var zapsDTO = zaps.Select(z => new ZAPModel
+            var zapsDTO = zaps.Select(z => new ZAPMainRecordModel
             {
                 Id = z.Id,
                 ZAPNumber = z.ZAPNumber,
@@ -89,11 +88,11 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                     Number = dn.Number,
                     MedProfileId = dn.MedProfileId,
                     LpuType = dn.LpuType,
-                    DiagnosisCode = dn.DiagnosisCode,
+                    DiagnosisId = dn.DiagnosisId,
                     BeginDate = dn.BeginDate,
                     EndDate = dn.EndDate,
                     EndReason = dn.EndReason,
-                    ZAPId = dn.ZAPId
+                    ZAPMainRecordId = dn.ZAPMainRecordId
                 }).ToList()
             });
 
@@ -101,11 +100,11 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ZAPModel>> Add(ZAPModel zapDTO)
+        public async Task<ActionResult<ZAPMainRecordModel>> Add(ZAPMainRecordModel zapDTO)
         {
             try
             {
-                ZAP zap = new ZAP
+                ZAPMainRecord zap = new ZAPMainRecord
                 {
                     ZAPNumber = zapDTO.ZAPNumber,
                     Year = zapDTO.Year,
@@ -135,7 +134,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<List<ZAPModel>>> Update(Guid id, ZAPModel zapDTO)
+        public async Task<ActionResult<List<ZAPMainRecordModel>>> Update(Guid id, ZAPMainRecordModel zapDTO)
         {
             var zap = await _repository.GetByKeyAsync(id);
 

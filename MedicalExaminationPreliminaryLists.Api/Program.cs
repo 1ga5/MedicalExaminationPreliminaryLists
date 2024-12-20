@@ -22,11 +22,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<IDiagnosisDictionaryRepository, DiagnosisDictionaryRepository>();
+builder.Services.AddTransient<IDiagnosisRepository, DiagnosisRepository>();
 builder.Services.AddTransient<IDispensaryObservationRepository, DispensaryObservationRepository>();
-builder.Services.AddTransient<IMedProfileDictionaryRepository, MedProfileDictionaryRepository>();
+builder.Services.AddTransient<IMedProfileRepository, MedProfileRepository>();
 builder.Services.AddTransient<IPersonRepository, PersonRepository>();
-builder.Services.AddTransient<IZAPRepository, ZAPRepository>();
+builder.Services.AddTransient<IZAPMainRecordRepository, ZAPRepository>();
 builder.Services.AddTransient<IUploadFileRepository, UploadFileRepository>();
 
 builder.Services.AddTransient<IUploadService, UploadMedicalExaminationPreliminaryListService>();

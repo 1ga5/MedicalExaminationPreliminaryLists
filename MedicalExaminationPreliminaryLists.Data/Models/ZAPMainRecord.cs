@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MedicalExaminationPreliminaryLists.Data.Common;
+using System.ComponentModel.DataAnnotations;
 
-namespace MedicalExaminationPreliminaryLists.Share.DTOs
+namespace MedicalExaminationPreliminaryLists.Data.Models
 {
-    public class ZAPModel : BaseGUIDModel
+    public class ZAPMainRecord : BaseGUIDEntity
     {
         [Display(Name = "Номер записи")]
         public int ZAPNumber { get; set; }
@@ -10,18 +11,24 @@ namespace MedicalExaminationPreliminaryLists.Share.DTOs
         [Display(Name = "Id загруженного файла")]
         public Guid UploadFileId { get; set; }
 
+        [Display(Name = "Ссылка на объект UploadFile")]
+        public virtual UploadFile? UploadFile { get; set; }
+
         [Display(Name = "Год")]
         public string Year { get; set; } = string.Empty;
 
         [Display(Name = "Id гражданина из ФЕРЗЛ")]
         public Guid PersonId { get; set; }
 
+        [Display(Name = "Ссылка на объект Person")]
+        public virtual Person? Person { get; set; }
+
         [Display(Name = "Фамилия")]
         public string Surname { get; set; } = string.Empty;
-
+        
         [Display(Name = "Имя")]
         public string Name1 { get; set; } = string.Empty;
-
+        
         [Display(Name = "Отчество")]
         public string Name2 { get; set; } = string.Empty;
 
@@ -32,11 +39,6 @@ namespace MedicalExaminationPreliminaryLists.Share.DTOs
         public string TelephoneNumber { get; set; } = string.Empty;
 
         [Display(Name = "Список диспансерных наблюдений")]
-        public ICollection<DispensaryObservationModel> Dispenses { get; set; } = new List<DispensaryObservationModel>();
-
-        public ZAPModel()
-        {
-            Id = Guid.NewGuid();
-        }
+        public virtual ICollection<DispensaryObservation> Dispenses { get; } = new List<DispensaryObservation>();
     }
 }

@@ -13,7 +13,10 @@ namespace MedicalExaminationPreliminaryLists.Share.DTOs
         [Display(Name = "Код лечебно-профилактического учреждения")]
         public string LpuType { get; set; } = string.Empty;
 
-        [Display(Name = "Код МКБ")]
+        [Display(Name = "Id болезни")]
+        public int DiagnosisId { get; set; }
+
+        [Display(Name = "Код болезни")]
         public string DiagnosisCode { get; set; } = string.Empty;
 
         [Display(Name = "Дата начала")]
@@ -26,6 +29,6 @@ namespace MedicalExaminationPreliminaryLists.Share.DTOs
         public string EndReason { get; set; } = string.Empty;
 
         [Display(Name = "Id записи")]
-        public Guid ZAPId { get; set; }
+        public Guid ZAPMainRecordId { get; set; }
     }
 }

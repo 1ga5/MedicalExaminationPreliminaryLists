@@ -6,7 +6,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Application
 {
     public interface IMedicalExaminationPreliminaryListParse
     {
-        ZAPModel GetZAP(XElement element);
+        ZAPMainRecordModel GetZAP(XElement element);
         DispensaryObservationModel GetDispensaryObservation (XElement element);
     }
 }
