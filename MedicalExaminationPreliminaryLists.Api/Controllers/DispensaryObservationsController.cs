@@ -32,7 +32,8 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 DiagnosisCode = dn.DiagnosisCode,
                 BeginDate = dn.BeginDate,
                 EndDate = dn.EndDate,
-                EndReason = dn.EndReason
+                EndReason = dn.EndReason,
+                ZAPId = dn.ZAPId
             });
 
             return Ok(DNsDTO);
@@ -56,7 +57,8 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 DiagnosisCode = dn.DiagnosisCode,
                 BeginDate = dn.BeginDate,
                 EndDate = dn.EndDate,
-                EndReason = dn.EndReason
+                EndReason = dn.EndReason,
+                ZAPId = dn.ZAPId
             };
 
             return Ok(dnDTO);
@@ -75,7 +77,8 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 DiagnosisCode = dn.DiagnosisCode,
                 BeginDate = dn.BeginDate,
                 EndDate = dn.EndDate,
-                EndReason = dn.EndReason
+                EndReason = dn.EndReason,
+                ZAPId = dn.ZAPId
             });
 
             return Ok(DNsDTO);

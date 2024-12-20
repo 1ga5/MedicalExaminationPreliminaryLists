@@ -1,11 +1,15 @@
 ﻿@page "/zap/change/{ZapId:guid}"
-@attribute [StreamRendering]
 
 @using Microsoft.AspNetCore.Authorization;
+@using MedicalExaminationPreliminaryLists.Share.DTOs
+
 @attribute [Authorize(Roles = "Admin")]
+@attribute [StreamRendering]
+
 @inject HttpClient httpClient
 @inject NavigationManager _navigationManager
-@using MedicalExaminationPreliminaryLists.Share.DTOs
+
+
 <PageTitle>Изменить запись</PageTitle>
 
 <div>
@@ -41,6 +45,7 @@
         <button type="button" class="btn btn-primary" @onclick="Submit">Сохранить</button>
     </p>
 </div>
+
 
 @code {
     [Parameter]
