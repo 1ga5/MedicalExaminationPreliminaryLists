@@ -1,4 +1,5 @@
-﻿using MedicalExaminationPreliminaryLists.Data.Models;
+﻿using MedicalExaminationPreliminaryLists.Api.Application.Mappers;
+using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -82,6 +83,26 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             });
 
             return Ok(DNsDTO);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<DispensaryObservationModel>> Add(DispensaryObservationModel dnDTO)
+        {
+            try
+            {
+                DispensaryObservation dn = dnDTO.ToEntity();
+
+                _repository.Add(dn);
+                await _repository.SaveChangesAsync();
+
+                dnDTO.Id = dn.Id;
+
+                return Ok(dnDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]

@@ -1,4 +1,5 @@
-﻿using MedicalExaminationPreliminaryLists.Data.Models;
+﻿using MedicalExaminationPreliminaryLists.Api.Application.Mappers;
+using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +14,12 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
     public class ZapsController : ControllerBase
     {
         private readonly IZAPRepository _repository;
+        private readonly IPersonRepository _personRepository;
 
-        public ZapsController(IZAPRepository repository)
+        public ZapsController(IZAPRepository repository, IPersonRepository personRepository)
         {
             _repository = repository;
+            _personRepository = personRepository;
         }
 
         [HttpGet]
@@ -95,6 +98,39 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             });
 
             return Ok(zapsDTO);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ZAPModel>> Add(ZAPModel zapDTO)
+        {
+            try
+            {
+                ZAP zap = new ZAP
+                {
+                    ZAPNumber = zapDTO.ZAPNumber,
+                    Year = zapDTO.Year,
+                    Surname = zapDTO.Surname,
+                    Name1 = zapDTO.Name1,
+                    Name2 = zapDTO.Name2,
+                    Birthday = zapDTO.Birthday,
+                    TelephoneNumber = zapDTO.TelephoneNumber,
+                    UploadFileId = zapDTO.UploadFileId
+                };
+
+                zap.PersonId = _personRepository.First(p =>
+                        p.Surname == zap.Surname && p.Name1 == zap.Name1 && p.Name2 == zap.Name2 && p.Birthday == zap.Birthday)?.Id ?? Guid.Empty;
+
+                _repository.Add(zap);
+                await _repository.SaveChangesAsync();
+
+                zapDTO.Id = zap.Id;
+
+                return Ok(zapDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
