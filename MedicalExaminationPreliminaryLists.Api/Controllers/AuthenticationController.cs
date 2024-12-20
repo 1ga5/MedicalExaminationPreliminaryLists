@@ -35,7 +35,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("registration")]
         public async Task<IActionResult> Register(RegistrationModel model)

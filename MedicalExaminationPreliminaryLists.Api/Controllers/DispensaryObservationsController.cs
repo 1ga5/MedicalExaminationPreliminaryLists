@@ -12,19 +12,17 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
     [Authorize]
     public class DispensaryObservationsController : ControllerBase
     {
-        private readonly IDispensaryObservationRepository _dnRepository;
-        private readonly IZAPRepository _zapRepository;
+        private readonly IDispensaryObservationRepository _repository;
 
         public DispensaryObservationsController(IDispensaryObservationRepository dnRepository, IZAPRepository zapRepository)
         {
-            _dnRepository = dnRepository;
-            _zapRepository = zapRepository;
+            _repository = dnRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<DispensaryObservationModel>>> GetAll()
         {
-            var DNs = await _dnRepository.GetAll().ToListAsync();
+            var DNs = await _repository.GetAll().ToListAsync();
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
@@ -43,7 +41,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DispensaryObservationModel>> Get(int id)
         {
-            var dn = await _dnRepository.GetByKeyAsync(id);
+            var dn = await _repository.GetByKeyAsync(id);
 
             if (dn == null)
             {
@@ -67,7 +65,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [HttpGet("zap/{id}")]
         public async Task<ActionResult<ZAPModel>> GetByZapId(Guid id)
         {
-            var DNs = _dnRepository.FindBy(z => z.ZAPId == id);
+            var DNs = _repository.FindBy(z => z.ZAPId == id);
 
             var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
             {
@@ -83,34 +81,11 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             return Ok(DNsDTO);
         }
 
-        [HttpGet("file/{id}")]
-        public async Task<ActionResult<List<DispensaryObservationModel>>> GetByFileId(Guid id)
-        {
-            var zaps = _zapRepository.FindBy(z => z.UploadFileId == id);
-
-            var DNs = _dnRepository.FindBy(ds => zaps.Contains(ds.ZAP));
-
-            var DNsDTO = DNs.Select(dn => new DispensaryObservationModel
-            {
-                Id = dn.Id,
-                Number = dn.Number,
-                MedProfileId = dn.MedProfileId,
-                LpuType = dn.LpuType,
-                DiagnosisCode = dn.DiagnosisCode,
-                BeginDate = dn.BeginDate,
-                EndDate = dn.EndDate,
-                EndReason = dn.EndReason,
-                ZAPId = dn.ZAPId
-            });
-
-            return Ok(DNsDTO);
-        }
-
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ZAPModel>>> Update(int id, DispensaryObservationModel dnModel)
         {
-            var dn = await _dnRepository.GetByKeyAsync(id);
+            var dn = await _repository.GetByKeyAsync(id);
 
             if (dn == null)
             {
@@ -126,7 +101,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             dn.EndReason = dnModel.EndReason;
 
 
-            await _dnRepository.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
 
             dnModel.Id = dn.Id;
 
@@ -137,7 +112,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UploadFile>>> Delete(int id)
         {
-            var dn = await _dnRepository.GetByKeyAsync(id);
+            var dn = await _repository.GetByKeyAsync(id);
 
             if (dn == null)
             {
@@ -145,8 +120,8 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             }
 
             // TODO: Подвязать пользователя
-            await _dnRepository.VirtualDelete(dn, 0);
-            await _dnRepository.SaveChangesAsync();
+            await _repository.VirtualDelete(dn, 0);
+            await _repository.SaveChangesAsync();
 
             return Ok("Успешно удалено");
         }

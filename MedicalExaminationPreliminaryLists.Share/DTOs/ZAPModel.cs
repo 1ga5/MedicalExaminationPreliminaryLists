@@ -31,6 +31,9 @@ namespace MedicalExaminationPreliminaryLists.Share.DTOs
         [Display(Name = "Номер телефона")]
         public string TelephoneNumber { get; set; } = string.Empty;
 
+        [Display(Name = "Список диспансерных наблюдений")]
+        public ICollection<DispensaryObservationModel> Dispenses { get; set; } = new List<DispensaryObservationModel>();
+
         public ZAPModel()
         {
             Id = Guid.NewGuid();

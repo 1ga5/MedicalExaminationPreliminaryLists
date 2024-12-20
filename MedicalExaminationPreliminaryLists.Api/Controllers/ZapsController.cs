@@ -65,6 +65,38 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             return Ok(zapDTO);
         }
 
+        [HttpGet("file/{id}")]
+        public async Task<ActionResult<ZAPModel>> GetByFileId(Guid id)
+        {
+            var zaps = _repository.FindBy(z => z.UploadFileId == id).Include(z => z.Dispenses).ToList();
+
+            var zapsDTO = zaps.Select(z => new ZAPModel
+            {
+                Id = z.Id,
+                ZAPNumber = z.ZAPNumber,
+                Year = z.Year,
+                Surname = z.Surname,
+                Name1 = z.Name1,
+                Name2 = z.Name2,
+                Birthday = z.Birthday,
+                TelephoneNumber = z.TelephoneNumber,
+                Dispenses = z.Dispenses.Select(dn => new DispensaryObservationModel
+                {
+                    Id = dn.Id,
+                    Number = dn.Number,
+                    MedProfileId = dn.MedProfileId,
+                    LpuType = dn.LpuType,
+                    DiagnosisCode = dn.DiagnosisCode,
+                    BeginDate = dn.BeginDate,
+                    EndDate = dn.EndDate,
+                    EndReason = dn.EndReason,
+                    ZAPId = dn.ZAPId
+                }).ToList()
+            });
+
+            return Ok(zapsDTO);
+        }
+
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ZAPModel>>> Update(Guid id, ZAPModel zapDTO)
@@ -90,26 +122,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             zapDTO.Id = zap.Id;
 
             return Ok(zap);
-        }
-
-        [HttpGet("file/{id}")]
-        public async Task<ActionResult<ZAPModel>> GetByFileId(Guid id)
-        {
-            var zaps = _repository.FindBy(z => z.UploadFileId == id);
-
-            var zapsDTO = zaps.Select(z => new ZAPModel
-            {
-                Id = z.Id,
-                ZAPNumber = z.ZAPNumber,
-                Year = z.Year,
-                Surname = z.Surname,
-                Name1 = z.Name1,
-                Name2 = z.Name2,
-                Birthday = z.Birthday,
-                TelephoneNumber = z.TelephoneNumber
-            });
-
-            return Ok(zapsDTO);
         }
 
         [HttpDelete("{id}")]
