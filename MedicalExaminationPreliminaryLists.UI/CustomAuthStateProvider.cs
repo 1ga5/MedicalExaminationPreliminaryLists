@@ -1,6 +1,8 @@
-﻿using System.Net.Http.Headers;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text.Json;
+using System.Text;
 
 namespace MedicalExaminationPreliminaryLists.UI
 {
@@ -24,9 +26,17 @@ namespace MedicalExaminationPreliminaryLists.UI
 
             if (!string.IsNullOrEmpty(token))
             {
-                identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
-                _http.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+                try
+                {
+                    identity = (ClaimsIdentity)ValidateToken(token.Replace("\"", "")).Identity;
+
+                    _http.DefaultRequestHeaders.Authorization =
+                        new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+                }
+                catch
+                {
+                    identity = new ClaimsIdentity();
+                }
             }
 
             var user = new ClaimsPrincipal(identity);
@@ -37,30 +47,24 @@ namespace MedicalExaminationPreliminaryLists.UI
             return state;
         }
 
-        public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        public static ClaimsPrincipal ValidateToken(string jwt)
         {
-            var payload = jwt.Split('.')[1];
-            var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-            // Замена ключа role на ключ ClaimTypes.Role, т.к. с ключом role не происходит определение роли
-            var roleValue = keyValuePairs["role"];
-            keyValuePairs.Remove("role");
-            keyValuePairs[ClaimTypes.Role] = roleValue;
-
-            var claims = keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
-            
-            return claims;
-        }
-
-        private static byte[] ParseBase64WithoutPadding(string base64)
-        {
-            switch (base64.Length % 4)
+            var validationParameters = new TokenValidationParameters
             {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
-            }
-            return Convert.FromBase64String(base64);
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Jj2N0agh4jkS862Lh64s70ahhgfDFFGDFg456wP54yewf")),
+                ValidateIssuer = true,
+                ValidIssuer = "https://localhost:5260",
+                ValidateAudience = true,
+                ValidAudience = "https://localhost:5260",
+                ValidateLifetime = true, 
+                ClockSkew = TimeSpan.Zero 
+            };
+
+            var principal = tokenHandler.ValidateToken(jwt, validationParameters, out _);
+            return principal;
         }
     }
 }
