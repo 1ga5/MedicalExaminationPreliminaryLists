@@ -33,7 +33,7 @@ else
         <tbody>
             @foreach (var file in files)
             {
-                <tr class="@GetRowClass(file)" @onclick="()=>SelectRow(file)">
+                <tr>
                     <td>@file.FileName</td>
                     <td>@file.UploadDate</td>
                     <td>
@@ -51,29 +51,7 @@ else
         </tbody>
     </table>
 }
-@if (userRole == "Admin")
-{
-    <div>
-        <p>
-            Название файла:<br />
-            <input @bind-value="fileDTO.FileName" />
-        </p>
-        <p>
-            Дата загрузки:<br />
-            <input @bind-value="fileDTO.UploadDate" />
-        </p>
-        <p>
-            @if (fileDTO.Id == Guid.Empty)
-            {
-                <button type="button" class="btn btn-primary" @onclick="Submit">Добавить</button>
-            }
-            else
-            {
-                <button type="button" class="btn btn-primary" @onclick="Submit">Сохранить</button>
-            }
-        </p>
-    </div>    
-}
+
 <div>
     <p>
         <InputFile OnChange="HandleSelectedFile" />
@@ -118,48 +96,6 @@ else
     {
         await httpClient.DeleteAsync($"{httpClient.BaseAddress}/UploadFiles/{id}");
         await LoadData();
-    }
-
-    async Task Submit()
-    {
-        if (fileDTO.Id == Guid.Empty)
-        {
-            // await httpClient.PostAsJsonAsync(httpClient.BaseAddress, dictionary);
-        }
-        else
-        {
-            await httpClient.PutAsJsonAsync($"{httpClient.BaseAddress}/UploadFiles/{fileDTO.Id}", fileDTO);
-        }
-
-        fileDTO.Id = Guid.Empty;
-        fileDTO.FileName = "";
-        fileDTO.UploadDate = DateTime.Now;
-        await LoadData();
-    }
-
-    void SelectRow(UploadFileModel file)
-    {
-        if (fileDTO.Id == file.Id)
-        {
-            fileDTO.Id = Guid.Empty;
-            fileDTO.FileName = "";
-            fileDTO.UploadDate = DateTime.Now;
-        }
-        else
-        {
-            fileDTO.Id = file.Id;
-            fileDTO.FileName = file.FileName;
-            fileDTO.UploadDate = file.UploadDate;
-        }
-    }
-
-    string GetRowClass(UploadFileModel file)
-    {
-        if (fileDTO.Id == file.Id)
-        {
-            return "selected-row";
-        }
-        return "custom-row";
     }
 
     private void HandleSelectedFile(InputFileChangeEventArgs e)

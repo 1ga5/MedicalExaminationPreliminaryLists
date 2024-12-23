@@ -13,12 +13,10 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
     public class ZapsController : ControllerBase
     {
         private readonly IZAPMainRecordRepository _repository;
-        private readonly IPersonRepository _personRepository;
 
-        public ZapsController(IZAPMainRecordRepository repository, IPersonRepository personRepository)
+        public ZapsController(IZAPMainRecordRepository repository)
         {
             _repository = repository;
-            _personRepository = personRepository;
         }
 
         [HttpGet]
@@ -99,39 +97,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             return Ok(zapsDTO);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ZAPMainRecordModel>> Add(ZAPMainRecordModel zapDTO)
-        {
-            try
-            {
-                ZAPMainRecord zap = new ZAPMainRecord
-                {
-                    ZAPNumber = zapDTO.ZAPNumber,
-                    Year = zapDTO.Year,
-                    Surname = zapDTO.Surname,
-                    Name1 = zapDTO.Name1,
-                    Name2 = zapDTO.Name2,
-                    Birthday = zapDTO.Birthday,
-                    TelephoneNumber = zapDTO.TelephoneNumber,
-                    UploadFileId = zapDTO.UploadFileId
-                };
-
-                zap.PersonId = _personRepository.First(p =>
-                        p.Surname == zap.Surname && p.Name1 == zap.Name1 && p.Name2 == zap.Name2 && p.Birthday == zap.Birthday)?.Id ?? Guid.Empty;
-
-                _repository.Add(zap);
-                await _repository.SaveChangesAsync();
-
-                zapDTO.Id = zap.Id;
-
-                return Ok(zapDTO);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ZAPMainRecordModel>>> Update(Guid id, ZAPMainRecordModel zapDTO)
@@ -156,7 +121,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 
             zapDTO.Id = zap.Id;
 
-            return Ok(zap);
+            return Ok(zapDTO);
         }
 
         [HttpDelete("{id}")]

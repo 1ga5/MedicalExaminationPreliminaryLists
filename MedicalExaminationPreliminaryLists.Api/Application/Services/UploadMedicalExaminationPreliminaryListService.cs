@@ -5,6 +5,7 @@ using MedicalExaminationPreliminaryLists.Data.Models;
 using MedicalExaminationPreliminaryLists.Infrastructure.Repositories;
 using MedicalExaminationPreliminaryLists.Share.DTOs;
 using MedicalExaminationPreliminaryLists.Share.Helpers;
+using TFOMSUploadServer.Infrastructure.Repositories;
 
 namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 {
@@ -14,17 +15,23 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
         private readonly IDispensaryObservationRepository _dispensaryObservationRepository;
         private readonly IPersonRepository _personRepository;
         private readonly IUploadFileRepository _uploadFileRepository;
+        private readonly IDiagnosisRepository _diagnosisRepository;
+        private readonly IMedProfileRepository _medProfileRepository;
 
 
         public UploadMedicalExaminationPreliminaryListService(IZAPMainRecordRepository zapRepository,
             IDispensaryObservationRepository dispensaryObservationRepository,
             IPersonRepository personRepository,
-            IUploadFileRepository uploadFileRepository)
+            IUploadFileRepository uploadFileRepository,
+            IDiagnosisRepository diagnosisRepository,
+            IMedProfileRepository medProfileRepository)
         {
             _zapRepository = zapRepository;
             _dispensaryObservationRepository = dispensaryObservationRepository;
             _personRepository = personRepository;
             _uploadFileRepository = uploadFileRepository;
+            _diagnosisRepository = diagnosisRepository;
+            _medProfileRepository = medProfileRepository;
         }
 
         public void UploadFile (string filePath)
@@ -69,7 +76,11 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Services
 
                         dispensaryObservationNew.ZAPMainRecordId = zap.Id;
                         dispensaryObservationNew.ZAP = zap;
-                        dispensaryObservationNew.LpuType = LpuHelper.SetLpu(dispensaryObservationNew.DiagnosisId.ToString());
+                        dispensaryObservationNew.LpuType = LpuHelper.SetLpu(dispensaryObservationNew.DiagnosisCode);
+
+                        dispensaryObservationNew.DiagnosisId = _diagnosisRepository.First(d => d.Code == dispensaryObservationNew.DiagnosisCode).Id;
+
+                        dispensaryObservationNew.MedProfileId = _medProfileRepository.First(m => m.Code == dispensaryObservationNew.MedProfileId).Id;
 
                         _dispensaryObservationRepository.Add(dispensaryObservationNew);
                     }

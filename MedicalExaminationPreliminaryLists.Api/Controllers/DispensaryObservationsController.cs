@@ -85,26 +85,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             return Ok(DNsDTO);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<DispensaryObservationModel>> Add(DispensaryObservationModel dnDTO)
-        {
-            try
-            {
-                DispensaryObservation dn = dnDTO.ToEntity();
-
-                _repository.Add(dn);
-                await _repository.SaveChangesAsync();
-
-                dnDTO.Id = dn.Id;
-
-                return Ok(dnDTO);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<ZAPMainRecordModel>>> Update(int id, DispensaryObservationModel dnModel)

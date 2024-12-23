@@ -13,9 +13,9 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
     [ApiController]
     public class TestContollerSecond : ControllerBase
     {
-        private readonly IMedProfileRepository _repository;
+        private readonly IDiagnosisRepository _repository;
 
-        public TestContollerSecond(IMedProfileRepository repository)
+        public TestContollerSecond(IDiagnosisRepository repository)
         {
             _repository = repository;
         }
@@ -33,7 +33,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             };
 
             MedicalCareFormReader reader = new();
-            List<MedProfile> newDictionariesList = reader.ReadFromXml(filePath);
+            List<Diagnosis> newDictionariesList = reader.ReadFromXml(filePath);
 
             var oldDictionaries = await _repository.GetAll().ToListAsync();
             foreach (var oldDictionary in oldDictionaries)
@@ -48,13 +48,13 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
 
             foreach (var newDictionary in newDictionariesList)
             {
-                var dictionary = new MedProfile
+                var dictionary = new Diagnosis
                 {
-                    Id = newDictionary.Id,
+                    //Id = newDictionary.Id,
                     Code = newDictionary.Code,
                     Name = newDictionary.Name,
-                    BeginDate = newDictionary.BeginDate,
-                    EndDate = newDictionary.EndDate
+                    ParentId = newDictionary.ParentId,
+                    IsActual = newDictionary.IsActual
                 };
                 _repository.Add(dictionary);
             }

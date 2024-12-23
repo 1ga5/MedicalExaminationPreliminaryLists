@@ -34,27 +34,6 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
             return Ok(dictionariesDTO);
         }
 
-        [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<List<UploadFile>>> Update(Guid id, UploadFile newFileDTO)
-        {
-            var file = await _repository.GetByKeyAsync(id);
-
-            if (file == null)
-            {
-                return NotFound();
-            }
-
-            file.FileName = newFileDTO.FileName;
-            file.UploadDate = newFileDTO.UploadDate;
-
-            await _repository.SaveChangesAsync();
-
-            newFileDTO.Id = file.Id;
-
-            return Ok(newFileDTO);
-        }
-
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UploadFile>>> Delete(Guid id)

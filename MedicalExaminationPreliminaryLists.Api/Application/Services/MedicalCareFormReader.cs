@@ -6,26 +6,29 @@ namespace MedicalCareForm.Api.Services
 {
     public class MedicalCareFormReader
     {
-        public List<MedProfile> ReadFromXml(string filePath)
+        public List<Diagnosis> ReadFromXml(string filePath)
         {
-            List<MedProfile> medicalCareFormList = [];
+            List<Diagnosis> medicalCareFormList = [];
             XDocument xdoc = XDocument.Load(filePath);
-            XElement? packet = xdoc.Element("packet");
-            if (packet is not null)
+            XElement? book = xdoc.Element("book");
+            XElement? entries = book.Element("entries");
+            if (book is not null)
             {
-                foreach (XElement zap in packet.Elements("zap"))
+                foreach (XElement zap in entries.Elements("entry"))
                 {
-                    var codeValue = zap.Element("IDPR")?.Value;
-                    var nameValue = zap.Element("PRNAME")?.Value;
-                    var beginDateValue = zap.Element("DATEBEG")?.Value;
-                    var endDateValue = zap.Element("DATEEND")?.Value;
+                    var id = zap.Element("ID")?.Value;
+                    var codeValue = zap.Element("MKB_CODE")?.Value;
+                    var nameValue = zap.Element("MKB_NAME")?.Value;
+                    var parentId = zap.Element("ID_PARENT")?.Value;
+                    var isActual = zap.Element("ACTUAL")?.Value;
 
-                    medicalCareFormList.Add(new MedProfile
+                    medicalCareFormList.Add(new Diagnosis
                     {
-                        Code = string.IsNullOrEmpty(codeValue) ? 0 : int.Parse(codeValue),
+                        Id = string.IsNullOrWhiteSpace(id) ? 0 : int.Parse(id),
+                        Code = string.IsNullOrEmpty(codeValue) ? "" : codeValue,
                         Name = string.IsNullOrEmpty(nameValue) ? "unknown" : nameValue,
-                        BeginDate = string.IsNullOrWhiteSpace(beginDateValue) ? DateTime.MinValue : DateTime.Parse(beginDateValue),
-                        EndDate = string.IsNullOrWhiteSpace(endDateValue) ? DateTime.MaxValue : DateTime.Parse(endDateValue)
+                        ParentId = string.IsNullOrWhiteSpace(parentId) ? 0 : int.Parse(parentId),
+                        IsActual = isActual == "1" ? true : false
                     });
                 }
             }

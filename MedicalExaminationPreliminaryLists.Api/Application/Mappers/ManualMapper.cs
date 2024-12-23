@@ -21,6 +21,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Application.Mappers
             Number = dispensaryObservationModel.Number,
             MedProfileId = dispensaryObservationModel.MedProfileId,
             DiagnosisId = dispensaryObservationModel.DiagnosisId,
+            DiagnosisCode = dispensaryObservationModel.DiagnosisCode,
             BeginDate = dispensaryObservationModel.BeginDate,
             EndDate = dispensaryObservationModel.EndDate,
             EndReason = dispensaryObservationModel.EndReason,
