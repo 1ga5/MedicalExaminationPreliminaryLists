@@ -2,13 +2,14 @@
 
 <link href="/css/styles.css" rel="stylesheet" type="text/css">
 
-@using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
 @attribute [StreamRendering]
 
 @inject NavigationManager _navigationManager
 @inject HttpClient httpClient
 @inject AuthenticationStateProvider AuthenticationStateProvider
+
+@using Microsoft.AspNetCore.Authorization;
 @using MedicalExaminationPreliminaryLists.Share.DTOs
 @using MedicalExaminationPreliminaryLists.Data.Models
 <PageTitle>Загруженные файлы</PageTitle>
@@ -17,7 +18,7 @@
 
 @if (!files.Any())
 {
-    <p><em>Loading...</em></p>
+    <p><em>Загрузка...</em></p>
 }
 else
 {
@@ -37,13 +38,14 @@ else
                     <td>@file.FileName</td>
                     <td>@file.UploadDate</td>
                     <td>
-                        <a href="/zaps/@file.Id">Подробнее</a>
+                        <a href="/zaps/@file.Id" class="btn btn-outline-primary">
+                            <i class="bi bi-file-text me-1"></i>Открыть содержимое
+                        </a>
                     </td>
                     <td>
                         @if (userRole == "Admin")
                         {
                             <button type="button" class="btn btn-danger" @onclick="@(async ()=> await Delete(file.Id))">Удалить</button>
-
                         }
                     </td>
                 </tr>
@@ -54,20 +56,35 @@ else
 
 <div>
     <p>
-        <InputFile OnChange="HandleSelectedFile" />
+        <label class="btn btn-primary">
+            Выбрать файл
+            <InputFile OnChange="HandleSelectedFile" class="form-control-file" style="display: none;" />
+        </label>
     </p>
+
+    @if (selectedFile != null)
+    {
+        <p><strong>Выбран файл:</strong> @selectedFile.Name</p>
+    }
+
     <p>
-        <button @onclick="()=>UploadFile()">Загрузить файл</button>
+        <button @onclick="()=>UploadFile()" class="btn btn-success" disabled="@(selectedFile == null)">Загрузить файл</button>
     </p>
 </div>
 
+@if (!string.IsNullOrEmpty(uploadStatusMessage))
+{
+    <div class="alert @statusClass">@((MarkupString)uploadStatusMessage)</div>
+}
 
 @code {
     List<UploadFileModel> files = [];
     UploadFileModel fileDTO = new();
     private IBrowserFile? selectedFile;
 
-    private string userRole;
+    private string userRole = string.Empty;
+    private string uploadStatusMessage = string.Empty;
+    private string statusClass = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -110,7 +127,20 @@ else
             var content = new MultipartFormDataContent();
             var fileContent = new StreamContent(selectedFile.OpenReadStream());
             content.Add(fileContent, "file", selectedFile.Name);
-            await httpClient.PostAsync("https://localhost:7112/api/v1/MedicalExaminationPreliminaryLists/upload", content);
+            var response = await httpClient.PostAsync("https://localhost:7112/api/v1/MedicalExaminationPreliminaryLists/upload", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                uploadStatusMessage = "Файл успешно загружен.";
+                statusClass = "alert-success";
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                uploadStatusMessage = errorMessage.Replace("\n", "<br>");
+                statusClass = "alert-danger";
+            }
+
             selectedFile = null;
             await LoadData();
         }

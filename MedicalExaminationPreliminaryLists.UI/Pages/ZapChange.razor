@@ -12,38 +12,49 @@
 
 <PageTitle>Изменить запись</PageTitle>
 
-<div>
-    <p>
-        Порядковый номер:<br />
-        <input @bind-value="zap.ZAPNumber" />
-    </p>
-    <p>
-        Год:<br />
-        <input @bind-value="zap.Year" />
-    </p>
-    <p>
-        Фамилия:<br />
-        <input @bind-value="zap.Surname" />
-    </p>
-    <p>
-        Имя:<br />
-        <input @bind-value="zap.Name1" />
-    </p>
-    <p>
-        Отчество:<br />
-        <input @bind-value="zap.Name2" />
-    </p>
-    <p>
-        Дата рождения:<br />
-        <input @bind-value="zap.Birthday" />
-    </p>
-    <p>
-        Телефонный номер:<br />
-        <input @bind-value="zap.TelephoneNumber" />
-    </p>
-    <p>
-        <button type="button" class="btn btn-primary" @onclick="Submit">Сохранить</button>
-    </p>
+<div class="container mt-4">
+    <h3 class="mb-4">Изменить запись</h3>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <form @onsubmit="Submit">
+                        <div class="mb-3">
+                            <label for="zapNumber" class="form-label">Порядковый номер</label>
+                            <input id="zapNumber" class="form-control" @bind-value="zap.ZAPNumber" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Год</label>
+                            <input id="year" type="number" class="form-control" @bind-value="zap.Year" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="surname" class="form-label">Фамилия</label>
+                            <input id="surname" class="form-control" @bind-value="zap.Surname" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="name1" class="form-label">Имя</label>
+                            <input id="name1" class="form-control" @bind-value="zap.Name1" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="name2" class="form-label">Отчество</label>
+                            <input id="name2" class="form-control" @bind-value="zap.Name2" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthday" class="form-label">Дата рождения</label>
+                            <input id="birthday" type="date" class="form-control" @bind-value="zap.Birthday" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="telephoneNumber" class="form-label">Телефонный номер</label>
+                            <input id="telephoneNumber" class="form-control" @bind-value="zap.TelephoneNumber" />
+                        </div>
+                        <div class="mb-3 text-center">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

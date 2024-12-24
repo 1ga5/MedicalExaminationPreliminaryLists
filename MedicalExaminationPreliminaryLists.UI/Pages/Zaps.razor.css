@@ -18,8 +18,10 @@ body {
     padding: 0.2em 2em;
 }
 
+/* Общие стили для таблиц */
 table {
     width: 100%;
+    table-layout: auto; /* Используем авто для ширины таблиц, чтобы они подстраивались */
 }
 
     table th {
@@ -31,32 +33,48 @@ table {
         padding: 0.4em;
     }
 
-    table.fold-table > tbody > tr.view td, table.fold-table > tbody > tr.view th {
+    /* Вложенная таблица */
+    table.fold-table .fold-content {
+        background-color: #f9f9f9;
+        padding: 0.5em;
+        overflow: hidden;
+    }
+
+        /* Вложенная таблица занимает всю доступную ширину */
+        table.fold-table .fold-content table {
+            width: 100%; /* Вложенная таблица теперь занимает 100% ширины */
+            table-layout: auto; /* Чтобы столбцы были пропорционально распределены */
+        }
+
+    /* Стиль для строк */
+    table.fold-table > tbody > tr.view:hover {
+        background: #ff7f68;
+    }
+
+    table.fold-table > tbody > tr.fold {
+        display: table-row;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.3s ease;
+    }
+
+        table.fold-table > tbody > tr.fold.open {
+            height: auto;
+        }
+
+    table.fold-table > tbody > tr.view {
         cursor: pointer;
     }
 
-        table.fold-table > tbody > tr.view td:first-child,
-        table.fold-table > tbody > tr.view th:first-child {
-            position: relative;
-            padding-left: 20px;
+        table.fold-table > tbody > tr.view.open td:first-child:before,
+        table.fold-table > tbody > tr.view.open th:first-child:before {
+            transform: rotate(-180deg);
+            color: #333;
         }
 
-            table.fold-table > tbody > tr.view td:first-child:before,
-            table.fold-table > tbody > tr.view th:first-child:before {
-                position: absolute;
-                top: 50%;
-                left: 5px;
-                width: 9px;
-                height: 16px;
-                margin-top: -8px;
-                font: 16px fontawesome;
-                color: #999;
-                transition: all 0.3s ease;
-            }
-
-    table.fold-table > tbody > tr.view:nth-child(4n-1) {
-        background: #eee;
-    }
+        table.fold-table > tbody > tr.view:nth-child(4n-1) {
+            background: #eee;
+        }
 
     table.fold-table > tbody > tr.view:hover {
         background: #ff7f68;
@@ -72,26 +90,42 @@ table {
             color: #333;
         }
 
+    /* Применяем фиксированную высоту для строк и скрываем их содержимое */
     table.fold-table > tbody > tr.fold {
-        display: none;
+        display: table-row; /* Показываем строку, но скрываем ее содержимое */
+        height: 0; /* Строка с контентом будет иметь высоту 0, чтобы не занимать место */
+        overflow: hidden; /* Скрываем все, что выходит за пределы */
+        transition: height 0.3s ease; /* Добавляем плавную анимацию */
     }
 
         table.fold-table > tbody > tr.fold.open {
-            display: table-row;
+            height: auto; /* При раскрытии строки даем ей высоту, чтобы содержимое отображалось */
         }
 
+/* Для плавного появления контента внутри раскрытых строк */
 .fold-content {
     padding: 0.5em;
+    transition: max-height 0.3s ease;
+    max-height: 0; /* Контент скрыт по умолчанию */
+    overflow: hidden; /* Скрываем контент */
 }
 
-    .fold-content h3 {
-        margin-top: 0;
+table.fold-table > tbody > tr.fold.open .fold-content {
+    max-height: 500px; /* Устанавливаем максимальную высоту для раскрытого контента */
+}
+
+/* Стиль для стрелочек */
+table.fold-table > tbody > tr.view.open td:first-child:before,
+table.fold-table > tbody > tr.view.open th:first-child:before {
+    transform: rotate(-180deg);
+    color: #333;
+}
+
+table.fold-table > tbody > tr.view {
+    cursor: pointer;
+}
+
+    table.fold-table > tbody > tr.view:hover {
+        background: #ff7f68;
     }
 
-    .fold-content > table {
-        border: 2px solid #ccc;
-    }
-
-        .fold-content > table > tbody tr:nth-child(even) {
-            background: #eee;
-        }
