@@ -1,7 +1,35 @@
 ﻿@page "/"
 
+@using Microsoft.AspNetCore.Components.Authorization
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="fs-4 fw-bold text-dark text-start">
+                        Здравствуйте, @context.User.Identity?.Name!
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="fs-4 fw-bold text-dark text-start">
+                        Добро пожаловать в сервис загрузки планируемых списков для оказания диспансерного наблюдения
+                    </h1>
+                    <p class="text-dark text-start mt-3">
+                        Для продолжения войдите в систему
+                    </p>
+                    <a href="/login" class="btn btn-primary">Войти</a>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Сервис загрузки</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -11,7 +13,7 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Главная
             </NavLink>
         </div>
         <div class="nav-item px-3">
@@ -20,9 +22,13 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="login">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Вход
-            </NavLink>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <NavLink class="nav-link" href="login">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Вход
+                    </NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
     </nav>
 </div>

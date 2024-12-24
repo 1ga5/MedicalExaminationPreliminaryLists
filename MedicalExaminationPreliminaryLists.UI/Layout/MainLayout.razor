@@ -1,4 +1,12 @@
-﻿@inherits LayoutComponentBase
+﻿@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject IConfiguration Configuration
+@inject NavigationManager _navigationManager
+
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inherits LayoutComponentBase
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -6,7 +14,11 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <AuthorizeView>
+                <Authorized>
+                    <button type="button" class="btn btn-danger" @onclick="@(async ()=> await Logout())">Выйти</button>
+                </Authorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">
@@ -14,3 +26,15 @@
         </article>
     </main>
 </div>
+
+@code {
+    async Task Logout()
+    {
+        var token = "";
+
+        await LocalStorage.SetItemAsync("token", token);
+        await AuthStateProvider.GetAuthenticationStateAsync();
+
+        _navigationManager.NavigateTo("");
+    }
+}
