@@ -68,7 +68,7 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
         [HttpGet("file/{id}")]
         public async Task<ActionResult<ZAPMainRecordModel>> GetByFileId(Guid id)
         {
-            var zaps = _repository.FindBy(z => z.UploadFileId == id).Include(z => z.Dispenses).ToList();
+            var zaps = _repository.FindBy(z => z.UploadFileId == id).Include(z => z.Dispenses.Where(ds => !ds.IsDeleted)).ToList();
 
             var zapsDTO = zaps.Select(z => new ZAPMainRecordModel
             {
