@@ -9,10 +9,10 @@
 		<IM>Иван</IM>
 		<OT>Иванович</OT>
 		<DR>1980-01-15</DR>
-		<TEL>*</TEL>
+		<TEL>+78367454748</TEL>
 		<DN>
 			<IDCASE>1</IDCASE>
-			<PROFIL>4</PROFIL>
+			<PROFIL>45</PROFIL>
 			<DS>I15</DS>
 			<D_BEG>2017-05-22</D_BEG>
 			<D_END></D_END>
@@ -26,9 +26,9 @@
 		<IM>Петр</IM>
 		<OT>Петрович</OT>
 		<DR>1990-06-20</DR>
-		<TEL>*</TEL>
+		<TEL>89366454448</TEL>
 		<DN>
-			<IDCASE>2</IDCASE>
+			<IDCASE>1</IDCASE>
 			<PROFIL>68</PROFIL>
 			<DS>E14.0</DS>
 			<D_BEG>2023-06-05</D_BEG>
@@ -51,7 +51,7 @@
 		<IM>*</IM>
 		<OT>*</OT>
 		<DR>2017-05-22</DR>
-		<TEL>*</TEL>
+		<TEL>+7 836 745 47 48</TEL>
 		<DN>
 			<IDCASE>4</IDCASE>
 			<PROFIL>12</PROFIL>

@@ -6,21 +6,45 @@
         <xs:element name="ZAP" maxOccurs="unbounded" minOccurs="1">
           <xs:complexType>
             <xs:sequence>
-              <xs:element type="xs:byte" name="N_ZAP"/>
+              <xs:element type="xs:int" name="N_ZAP"/>
               <xs:element type="xs:short" name="YEAR"/>
               <xs:element type="xs:string" name="FAM"/>
               <xs:element type="xs:string" name="IM"/>
               <xs:element type="xs:string" name="OT"/>
-              <xs:element type="xs:date" name="DR"/>
-              <xs:element type="xs:string" name="TEL"/>
+              <xs:element name="DR">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="([0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01]))|(^\s*$)"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+              <xs:element name="TEL">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="^((8|\+7)[\- ]?)(\(?\d{3}\)?[\- ]?)[\d\- ]{7,10}$"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
               <xs:element name="DN" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element type="xs:byte" name="IDCASE"/>
-                    <xs:element type="xs:byte" name="PROFIL"/>
+                    <xs:element type="xs:int" name="IDCASE"/>
+                    <xs:element type="xs:int" name="PROFIL"/>
 					<xs:element type="xs:string" name="DS"/>
-                    <xs:element type="xs:string" name="D_BEG"/>
-                    <xs:element type="xs:string" name="D_END"/>
+                    <xs:element name="D_BEG">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="([0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01]))|(^\s*$)"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+                    <xs:element name="D_END">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="([0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01]))|(^\s*$)"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
                     <xs:element type="xs:string" name="END_RES"/>
                   </xs:sequence>
                 </xs:complexType>

@@ -5,16 +5,16 @@
 	<ZAP>
 		<N_ZAP>1</N_ZAP>
 		<YEAR>2024</YEAR>
-		<IM>Иван</IM>
 		<FAM>Иванов</FAM>
+		<IM>Иван</IM>
 		<OT>Иванович</OT>
 		<DR>1980-01-15</DR>
-		<TEL>*</TEL>
+		<TEL>8967543565</TEL>
 		<DN>
 			<IDCASE>1</IDCASE>
 			<PROFIL>4</PROFIL>
-			<DS>I14</DS>
-			<D_BEG>2017-05-22</D_BEG>
+			<DS>I15</DS>
+			<D_BEG>22-05-2017</D_BEG>
 			<D_END></D_END>
 			<END_RES></END_RES>
 		</DN>
@@ -26,7 +26,7 @@
 		<IM>Петр</IM>
 		<OT>Петрович</OT>
 		<DR>1990-06-20</DR>
-		<TEL>*</TEL>
+		<TEL>64562526376556235235</TEL>
 		<DN>
 			<IDCASE>2</IDCASE>
 			<PROFIL>68</PROFIL>
@@ -38,7 +38,7 @@
 		<DN>
 			<IDCASE>3</IDCASE>
 			<PROFIL>4</PROFIL>
-			<DS2>J30.1</DS2>
+			<DS>J30.1</DS>
 			<D_BEG>2019-08-06</D_BEG>
 			<D_END></D_END>
 			<END_RES></END_RES>
@@ -51,10 +51,11 @@
 		<IM>*</IM>
 		<OT>*</OT>
 		<DR>2017-05-22</DR>
-		<TEL>*</TEL>
+		<TEL>4</TEL>
 		<DN>
 			<IDCASE>4</IDCASE>
 			<PROFIL>12</PROFIL>
+			<DS>D09</DS>
 			<D_BEG>2017-09-27</D_BEG>
 			<D_END></D_END>
 			<END_RES></END_RES>
