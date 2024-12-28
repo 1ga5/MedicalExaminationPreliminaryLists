@@ -75,7 +75,23 @@ namespace MedicalExaminationPreliminaryLists.Api.Controllers
                 }
             };
 
-            testPeople[3].Id = Guid.Empty;
+            testPeople = new List<Person>
+            {
+                new Person
+                {
+                    PersonId = "1",
+                    Surname = "Пономарев",
+                    Name1 = "Андрей",
+                    Name2 = "Михайлович",
+                    Sex = 1,
+                    Birthday = new DateTime(1980, 1, 15),
+                    SNILS = "123-456-764 00",
+                    ENP = "1111111111112111",
+                    IsBad = false,
+                    Hash = "hash10"
+                },
+            };
+
             foreach (Person p in testPeople)
             {
                 _repository.Add(p);

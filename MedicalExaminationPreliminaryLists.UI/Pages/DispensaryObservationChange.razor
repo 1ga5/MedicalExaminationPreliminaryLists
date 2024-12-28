@@ -13,42 +13,42 @@
 <PageTitle>Изменить запись</PageTitle>
 
 <div class="container mt-4">
-    <h3 class="mb-4">Изменить запись</h3>
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
+    <h3 class="mb-4">Изменить сведение о диспансерном наблюдении</h3>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
                     <form @onsubmit="Submit">
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="number" class="form-label">Порядковый номер</label>
-                            <input id="number" class="form-control" @bind-value="dn.Number" />
+                            <input id="number" class="form-control form-control-sm" @bind-value="dn.Number" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="medProfileId" class="form-label">Id профиля медицинской помощи</label>
-                            <input id="medProfileId" class="form-control" @bind-value="dn.MedProfileId" />
+                            <input id="medProfileId" class="form-control form-control-sm" @bind-value="dn.MedProfileId" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="lpuType" class="form-label">Код лечебно-профилактического учреждения</label>
-                            <input id="lpuType" class="form-control" @bind-value="dn.LpuType" />
+                            <input id="lpuType" class="form-control form-control-sm" @bind-value="dn.LpuType" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="diagnosisId" class="form-label">Код МКБ</label>
-                            <input id="diagnosisId" class="form-control" @bind-value="dn.DiagnosisId" />
+                            <input id="diagnosisId" class="form-control form-control-sm" @bind-value="dn.DiagnosisId" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="beginDate" class="form-label">Дата начала</label>
-                            <input id="beginDate" type="date" class="form-control" @bind-value="dn.BeginDate" />
+                            <input id="beginDate" type="date" class="form-control form-control-sm" @bind-value="dn.BeginDate" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="endDate" class="form-label">Дата конца</label>
-                            <input id="endDate" type="date" class="form-control" @bind-value="dn.EndDate" />
+                            <input id="endDate" type="date" class="form-control form-control-sm" @bind-value="dn.EndDate" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="endReason" class="form-label">Причина прекращения</label>
-                            <input id="endReason" class="form-control" @bind-value="dn.EndReason" />
+                            <input id="endReason" class="form-control form-control-sm" @bind-value="dn.EndReason" />
                         </div>
-                        <div class="mb-3 text-center">
-                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <div class="mb-2 text-center">
+                            <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
                         </div>
                     </form>
                 </div>
